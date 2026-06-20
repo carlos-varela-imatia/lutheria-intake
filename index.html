@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#F8F2EB">
+  <title>Solicitud de Servicio — Ana Farina</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:        #F8F2EB;
+      --cream-2:      #F2EAE0;
+      --white:        #FFFFFF;
+      --border:       #E4D8CC;
+      --border-focus: #C8683C;
+      --text:         #1A1210;
+      --text-2:       #6B5040;
+      --text-3:       #9E8578;
+      --coral:        #C8683C;
+      --coral-light:  #FAEEE7;
+      --coral-dark:   #8A3E1E;
+      --coral-border: #E8A882;
+      --red:          #B93B2B;
+      --red-light:    #FEF0EE;
+      --blue:         #2465A0;
+      --blue-light:   #EBF3FB;
+      --green:        #2A7A4F;
+      --green-light:  #E6F5ED;
+      --r:            14px;
+      --r-sm:         9px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── HEADER ───────────────────────────────────── */
+    .header {
+      position: sticky; top: 0; z-index: 50;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+    }
+    .header-inner {
+      max-width: 540px; margin: 0 auto;
+      padding: 14px 20px 0;
+    }
+    .header-top {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .brand {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .brand-dot {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: var(--coral);
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 14px; line-height: 1;
+    }
+    .brand-name {
+      font-family: 'Lora', serif;
+      font-size: 13px; font-weight: 600;
+      color: var(--text); letter-spacing: 0.03em;
+    }
+    .step-chip {
+      font-size: 11px; font-weight: 600;
+      color: var(--coral); letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: var(--coral-light);
+      padding: 3px 9px; border-radius: 20px;
+    }
+    .progress-rail {
+      height: 3px; background: var(--border); border-radius: 2px;
+    }
+    .progress-bar {
+      height: 100%; background: var(--coral); border-radius: 2px;
+      transition: width 0.4s ease;
+    }
+
+    /* ── CANVAS ───────────────────────────────────── */
+    .canvas {
+      max-width: 540px; margin: 0 auto;
+      padding: 32px 16px 120px;
+    }
+
+    /* ── STEPS ───────────────────────────────────── */
+    .step { display: none; }
+    .step.on {
+      display: block;
+      animation: rise 0.24s ease both;
+    }
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .eyebrow {
+      font-size: 11px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.12em; color: var(--coral);
+      margin-bottom: 8px;
+    }
+    h2 {
+      font-family: 'Lora', serif;
+      font-size: 26px; font-weight: 700; line-height: 1.2;
+      color: var(--text); margin-bottom: 10px;
+    }
+    .lead {
+      font-size: 15px; color: var(--text-2); line-height: 1.55;
+      margin-bottom: 30px;
+    }
+
+    /* ── SECTION LABEL ────────────────────────────── */
+    .sec {
+      font-size: 10px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.14em; color: var(--text-3);
+      margin: 26px 0 10px;
+    }
+    .sec:first-child { margin-top: 0; }
+
+    /* ── CARD GRIDS ──────────────────────────────── */
+    .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .g1 { display: grid; grid-template-columns: 1fr; gap: 8px; }
+    .g3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
+
+    /* ── BASE CARD ───────────────────────────────── */
+    .card {
+      background: var(--white);
+      border: 2px solid var(--border);
+      border-radius: var(--r);
+      padding: 15px 15px 13px;
+      cursor: pointer; position: relative;
+      transition: border-color 0.14s, box-shadow 0.14s, background 0.14s;
+      user-select: none;
+    }
+    .card:hover { border-color: var(--coral); box-shadow: 0 2px 10px rgba(200,104,60,0.12); }
+    .card.on   { border-color: var(--coral); background: var(--coral-light); }
+    .card.on::after {
+      content: '✓';
+      position: absolute; top: 11px; right: 13px;
+      font-size: 12px; font-weight: 700; color: var(--coral);
+    }
+
+    .c-icon { font-size: 26px; line-height: 1; margin-bottom: 8px; }
+    .c-name { font-size: 14px; font-weight: 600; color: var(--text); }
+    .c-desc { font-size: 12px; color: var(--text-2); margin-top: 3px; line-height: 1.4; }
+    .c-price { font-size: 14px; font-weight: 700; color: var(--coral-dark); margin-top: 9px; }
+
+    /* ── SERVICE CARD ────────────────────────────── */
+    .svc {
+      background: var(--white);
+      border: 2px solid var(--border);
+      border-radius: var(--r);
+      padding: 17px 17px 15px;
+      cursor: pointer; position: relative;
+      transition: border-color 0.14s, background 0.14s;
+      user-select: none;
+    }
+    .svc:hover { border-color: var(--coral); }
+    .svc.on   { border-color: var(--coral); background: var(--coral-light); }
+    .svc.on::after {
+      content: '✓';
+      position: absolute; top: 15px; right: 17px;
+      font-size: 13px; font-weight: 700; color: var(--coral);
+    }
+    .s-name { font-size: 15px; font-weight: 600; color: var(--text); padding-right: 24px; margin-bottom: 5px; }
+    .s-desc { font-size: 13px; color: var(--text-2); line-height: 1.45; margin-bottom: 10px; }
+    .s-price { font-size: 14px; font-weight: 700; color: var(--coral-dark); }
+
+    /* ── VALUE GRID ──────────────────────────────── */
+    .vopt {
+      text-align: center; padding: 11px 6px;
+      border: 2px solid var(--border); border-radius: var(--r-sm);
+      cursor: pointer; font-size: 11px; color: var(--text-2);
+      background: var(--white); line-height: 1.4;
+      transition: border-color 0.14s, background 0.14s;
+      user-select: none;
+    }
+    .vopt strong { display: block; font-size: 12px; color: var(--text); margin-top: 2px; }
+    .vopt:hover { border-color: var(--coral); }
+    .vopt.on { border-color: var(--coral); background: var(--coral-light); }
+    .vopt.on strong { color: var(--coral-dark); }
+
+    /* ── BADGES ───────────────────────────────────── */
+    .bdg {
+      display: inline-flex; align-items: center;
+      padding: 2px 7px; border-radius: 20px;
+      font-size: 11px; font-weight: 600; margin-left: 6px;
+      vertical-align: middle; line-height: 1.4;
+    }
+    .bdg-red  { background: #FEE2E2; color: var(--red); }
+    .bdg-blue { background: var(--blue-light); color: var(--blue); }
+    .bdg-gold { background: var(--coral-light); color: var(--coral-dark); }
+
+    /* ── NOTICES ─────────────────────────────────── */
+    .notice {
+      border-radius: var(--r-sm); padding: 12px 15px;
+      font-size: 13px; line-height: 1.55; margin-top: 12px;
+      display: none;
+    }
+    .notice.on { display: block; }
+    .n-gold  { background: var(--coral-light); border: 1px solid var(--coral-border); color: var(--coral-dark); }
+    .n-red   { background: var(--red-light);   border: 1px solid #FECACA; color: #991B1B; }
+    .n-blue  { background: var(--blue-light);  border: 1px solid #BFDBFE; color: #1E40AF; }
+    .n-green { background: var(--green-light); border: 1px solid #A7F3D0; color: #065F46; }
+
+    /* ── FORM ────────────────────────────────────── */
+    .field { margin-bottom: 20px; }
+    label {
+      display: block; font-size: 13px; font-weight: 600;
+      color: var(--text); margin-bottom: 7px;
+    }
+    .opt-tag { font-size: 11px; font-weight: 400; color: var(--text-3); margin-left: 4px; }
+
+    input[type="text"], input[type="email"],
+    input[type="tel"],  input[type="date"], textarea {
+      width: 100%; padding: 13px 15px;
+      border: 2px solid var(--border); border-radius: var(--r-sm);
+      font-size: 15px; color: var(--text);
+      background: var(--white); font-family: 'Inter', sans-serif;
+      outline: none; transition: border-color 0.15s;
+      -webkit-appearance: none;
+    }
+    input:focus, textarea:focus { border-color: var(--border-focus); }
+    textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
+
+    /* ── UPLOAD ──────────────────────────────────── */
+    .upload {
+      border: 2px dashed var(--border); border-radius: var(--r-sm);
+      padding: 22px 16px; text-align: center;
+      color: var(--text-3); cursor: pointer;
+      background: var(--white);
+      transition: border-color 0.14s, background 0.14s;
+    }
+    .upload:hover { border-color: var(--coral); background: var(--coral-light); }
+    .upload-icon { font-size: 22px; margin-bottom: 6px; }
+    .upload-text { font-size: 13px; font-weight: 600; color: var(--text-2); }
+    .upload-sub  { font-size: 11px; margin-top: 4px; }
+    #file-input { display: none; }
+    #file-names { margin-top: 9px; font-size: 12px; color: var(--text-2); line-height: 1.8; }
+
+    /* ── DIVIDER ─────────────────────────────────── */
+    .hr { height: 1px; background: var(--border); margin: 24px 0; }
+
+    /* ── RETURNING CLIENT ────────────────────────── */
+    .client-found {
+      background: var(--white); border: 2px solid var(--coral);
+      border-radius: var(--r); padding: 17px; margin-bottom: 18px;
+    }
+    .cf-name { font-family: 'Lora', serif; font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+    .cf-sub  { font-size: 13px; color: var(--text-2); }
+
+    /* ── SUMMARY ─────────────────────────────────── */
+    .estimate {
+      background: linear-gradient(135deg, var(--coral-light) 0%, #FDF5F0 100%);
+      border: 1px solid var(--coral-border); border-radius: var(--r);
+      padding: 22px; margin-bottom: 20px;
+    }
+    .est-label {
+      font-size: 10px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.12em; color: var(--coral); margin-bottom: 8px;
+    }
+    .est-amount {
+      font-family: 'Lora', serif;
+      font-size: 36px; font-weight: 700; color: var(--text);
+      line-height: 1; margin-bottom: 8px;
+    }
+    .est-lines { font-size: 13px; color: var(--text-2); line-height: 1.75; }
+    .est-note  { font-size: 12px; color: var(--text-3); margin-top: 10px; font-style: italic; }
+
+    .sum-block {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: var(--r); overflow: hidden; margin-bottom: 14px;
+    }
+    .sum-sec {
+      padding: 15px 17px; border-bottom: 1px solid var(--border);
+    }
+    .sum-sec:last-child { border-bottom: none; }
+    .sum-sec-title {
+      font-size: 10px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--text-3); margin-bottom: 10px;
+    }
+    .sum-row {
+      display: flex; justify-content: space-between;
+      align-items: flex-start; gap: 12px;
+      font-size: 14px; margin-bottom: 5px;
+    }
+    .sum-row:last-child { margin-bottom: 0; }
+    .sum-k { color: var(--text-2); flex-shrink: 0; }
+    .sum-v { font-weight: 500; text-align: right; }
+
+    /* ── ENTRY SCREEN ────────────────────────────── */
+    .entry {
+      text-align: center; padding: 28px 0 0;
+    }
+    .entry-art {
+      width: 72px; height: 72px;
+      background: var(--coral); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 32px; margin: 0 auto 20px;
+    }
+    .entry-title {
+      font-family: 'Lora', serif;
+      font-size: 28px; font-weight: 700; line-height: 1.2;
+      margin-bottom: 12px;
+    }
+    .entry-sub {
+      font-size: 15px; color: var(--text-2); line-height: 1.55;
+      margin-bottom: 36px;
+    }
+    .ebtn {
+      width: 100%; padding: 18px 20px; margin-bottom: 10px;
+      border-radius: var(--r); font-family: 'Inter', sans-serif;
+      font-size: 15px; font-weight: 600; cursor: pointer;
+      border: 2px solid transparent; text-align: left;
+      display: flex; flex-direction: column; gap: 3px;
+      transition: all 0.15s;
+    }
+    .ebtn-sub { font-size: 12px; font-weight: 400; opacity: 0.7; }
+    .ebtn-primary  { background: var(--coral); color: white; }
+    .ebtn-primary:hover  { background: var(--coral-dark); }
+    .ebtn-secondary { background: var(--white); border-color: var(--border); color: var(--text); }
+    .ebtn-secondary:hover { border-color: var(--coral); }
+
+    /* ── DONE SCREEN ─────────────────────────────── */
+    .done { text-align: center; padding: 40px 0 20px; }
+    .done-ring {
+      width: 68px; height: 68px; border-radius: 50%;
+      background: var(--green-light);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px; margin: 0 auto 22px;
+    }
+    .done-title { font-family: 'Lora', serif; font-size: 26px; font-weight: 700; margin-bottom: 12px; }
+    .done-desc  { font-size: 15px; color: var(--text-2); line-height: 1.6; margin-bottom: 26px; }
+    .done-box {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 17px;
+      font-size: 13px; color: var(--text-2);
+      text-align: left; line-height: 1.75; margin-bottom: 20px;
+    }
+
+    /* ── EVOLUTION PILL ──────────────────────────── */
+    .evo {
+      background: #EFF3FF; border: 1px solid #C7D7FB;
+      border-radius: var(--r-sm); padding: 11px 14px;
+      font-size: 12px; color: #374FC0; line-height: 1.5;
+      margin-top: 16px; text-align: left;
+    }
+
+    /* ── FOOTER NAV ──────────────────────────────── */
+    .fnav {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: var(--white); border-top: 1px solid var(--border);
+      padding: 12px 16px env(safe-area-inset-bottom, 0);
+      display: none;
+    }
+    .fnav.on { display: block; }
+    .fnav-inner {
+      display: flex; gap: 10px;
+      max-width: 540px; margin: 0 auto;
+    }
+    .btn {
+      border: none; border-radius: var(--r-sm);
+      padding: 15px 20px; font-size: 15px; font-weight: 600;
+      cursor: pointer; font-family: 'Inter', sans-serif;
+      transition: opacity 0.14s, transform 0.1s; outline: none;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-next {
+      background: var(--coral); color: white; flex: 1;
+    }
+    .btn-next:hover { opacity: 0.88; }
+    .btn-back {
+      background: transparent; color: var(--text-2);
+      border: 2px solid var(--border); min-width: 84px;
+    }
+    .btn-back:hover { border-color: var(--text-3); }
+
+    /* ── WAVE DECO (subtle) ──────────────────────── */
+    .wave-deco {
+      width: 100%; height: 40px; overflow: hidden;
+      opacity: 0.25; margin-bottom: -10px;
+    }
+
+    @media (min-width: 540px) {
+      .fnav-inner { padding: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-inner">
+    <div class="header-top">
+      <div class="brand">
+        <div class="brand-dot">🎻</div>
+        <span class="brand-name">Ana Farina</span>
+      </div>
+      <span class="step-chip" id="chip"></span>
+    </div>
+    <div class="progress-rail">
+      <div class="progress-bar" id="pbar" style="width:0%"></div>
+    </div>
+  </div>
+</header>
+
+<div class="canvas">
+
+  <!-- ── WELCOME ─────────────────────────────────── -->
+  <div class="step on" id="s-welcome">
+    <div class="entry">
+      <div class="entry-art">🎻</div>
+      <h1 class="entry-title">¿Qué necesita tu instrumento?</h1>
+      <p class="entry-sub">Cuéntanoslo en unos pasos.<br>Ana revisará tu solicitud y te confirmará disponibilidad.</p>
+      <button class="ebtn ebtn-primary" onclick="go('s-contact')">
+        Primera vez en el taller
+        <span class="ebtn-sub">Crear nuevo perfil</span>
+      </button>
+      <button class="ebtn ebtn-secondary" onclick="go('s-identify')">
+        Ya soy cliente
+        <span class="ebtn-sub">Accede con tu teléfono o email</span>
+      </button>
+      <div class="evo">
+        💡 Próximamente: área de cliente con historial de tus instrumentos y solicitudes en un clic.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── IDENTIFY ────────────────────────────────── -->
+  <div class="step" id="s-identify">
+    <div class="eyebrow">Cliente anterior</div>
+    <h2>¿Cómo te identificamos?</h2>
+    <p class="lead">Introduce el teléfono o email con el que contactaste anteriormente.</p>
+    <div class="field">
+      <label for="ret-id">Teléfono o email</label>
+      <input type="text" id="ret-id" placeholder="612 345 678 · nombre@email.com" oninput="lookup(this.value)" autocomplete="off">
+    </div>
+    <div class="client-found" id="cf" style="display:none">
+      <div class="cf-name" id="cf-name"></div>
+      <div class="cf-sub"  id="cf-sub"></div>
+    </div>
+    <div class="notice n-red" id="cf-no">
+      No encontramos ese contacto.
+      <a href="#" onclick="go('s-contact');return false" style="color:inherit;font-weight:700;">Continuar como nuevo cliente →</a>
+    </div>
+  </div>
+
+  <!-- ── CONTACT ────────────────────────────────── -->
+  <div class="step" id="s-contact">
+    <div class="eyebrow">Paso 1 de 4</div>
+    <h2>Tus datos de contacto</h2>
+    <p class="lead">Solo lo esencial para que Ana pueda confirmarte.</p>
+    <div class="field">
+      <label for="f-nombre">Nombre y apellidos</label>
+      <input type="text" id="f-nombre" placeholder="Tu nombre completo" autocomplete="name">
+    </div>
+    <div class="field">
+      <label for="f-tel">Teléfono</label>
+      <input type="tel" id="f-tel" placeholder="612 345 678" autocomplete="tel">
+    </div>
+    <div class="field">
+      <label for="f-email">Email <span class="opt-tag">(opcional)</span></label>
+      <input type="email" id="f-email" placeholder="nombre@email.com" autocomplete="email">
+    </div>
+  </div>
+
+  <!-- ── INSTRUMENT ─────────────────────────────── -->
+  <div class="step" id="s-instrument">
+    <div class="eyebrow">Paso 2 de 4</div>
+    <h2>Tu instrumento</h2>
+    <p class="lead">Nos ayuda a preparar el servicio adecuado.</p>
+
+    <p class="sec">Tipo de instrumento</p>
+    <div class="g2">
+      <div class="card" data-g="instr" data-v="violin"     onclick="pick(this)"><div class="c-icon">🎻</div><div class="c-name">Violín</div></div>
+      <div class="card" data-g="instr" data-v="viola"      onclick="pick(this)"><div class="c-icon">🎻</div><div class="c-name">Viola</div></div>
+      <div class="card" data-g="instr" data-v="chelo"      onclick="pick(this)"><div class="c-icon">🎸</div><div class="c-name">Violonchelo</div></div>
+      <div class="card" data-g="instr" data-v="contrabajo" onclick="pick(this)"><div class="c-icon">🎼</div><div class="c-name">Contrabajo</div></div>
+    </div>
+
+    <p class="sec">¿Cómo usas tu instrumento?</p>
+    <div class="g1">
+      <div class="card" data-g="seg" data-v="estudiante"  onclick="pick(this)"><div class="c-name">Estudiante</div><div class="c-desc">Conservatorio, escuela de música o aprendizaje</div></div>
+      <div class="card" data-g="seg" data-v="amateur"     onclick="pick(this)"><div class="c-name">Amateur activo</div><div class="c-desc">Música de cámara, bandas, aficionado con regularidad</div></div>
+      <div class="card" data-g="seg" data-v="profesional" onclick="pick(this)"><div class="c-name">Profesional</div><div class="c-desc">Conciertos, giras, grabaciones, docencia</div></div>
+      <div class="card" data-g="seg" data-v="orquesta"    onclick="pick(this)"><div class="c-name">Músico de orquesta</div><div class="c-desc">Plantilla o temporada orquestal</div></div>
+    </div>
+
+    <p class="sec">Valor aproximado <span class="opt-tag">(opcional)</span></p>
+    <p style="font-size:13px;color:var(--text-2);line-height:1.45;margin-bottom:10px;">Nos ayuda a valorar el nivel de responsabilidad técnica.</p>
+    <div class="g3">
+      <div class="vopt" data-g="valor" data-v="<2k"  onclick="pick(this)">Menos de<strong>2.000 €</strong></div>
+      <div class="vopt" data-g="valor" data-v="2-5k" onclick="pick(this)">Entre<strong>2.000–5.000 €</strong></div>
+      <div class="vopt" data-g="valor" data-v=">5k"  onclick="pick(this)">Más de<strong>5.000 €</strong></div>
+    </div>
+    <div class="notice n-gold" id="n-hival">
+      💎 Los instrumentos de alto valor tienen un suplemento del 20% por responsabilidad técnica. Ana te lo confirmará antes de comenzar.
+    </div>
+  </div>
+
+  <!-- ── SERVICE ────────────────────────────────── -->
+  <div class="step" id="s-service">
+    <div class="eyebrow">Paso 3 de 4</div>
+    <h2>¿Qué necesita tu instrumento?</h2>
+    <p class="lead">Selecciona el servicio que mejor describe lo que buscas.</p>
+    <div class="g1">
+      <div class="svc" data-g="svc" data-v="mant"    onclick="pick(this)"><div class="s-name">Ajuste de Mantenimiento</div><div class="s-desc">Revisión general, alma, puente, clavijas y limpieza. Para instrumentos en uso regular.</div><div class="s-price" id="p-mant">—</div></div>
+      <div class="svc" data-g="svc" data-v="opti"    onclick="pick(this)"><div class="s-name">Optimización del Instrumento</div><div class="s-desc">Ajuste fino acústico, equilibrio de respuesta entre cuerdas. Para quienes quieren sacar más del instrumento.</div><div class="s-price" id="p-opti">—</div></div>
+      <div class="svc" data-g="svc" data-v="prof"    onclick="pick(this)"><div class="s-name">Ajuste Profesional / de Escenario</div><div class="s-desc">Diagnóstico completo, optimización para repertorio específico y revisión posterior incluida.</div><div class="s-price" id="p-prof">—</div></div>
+      <div class="svc" data-g="svc" data-v="corr"    onclick="pick(this)"><div class="s-name">Corrección de Problemas</div><div class="s-desc">Cuando algo no funciona bien: puente, alma, vibraciones, clavijas. Diagnóstico incluido.</div><div class="s-price" id="p-corr">—</div></div>
+      <div class="svc" data-g="svc" data-v="estr"    onclick="pick(this)"><div class="s-name">Intervención Estructural</div><div class="s-desc">Grietas, encolados, refuerzos, mástil. Trabajo delicado con documentación del proceso.</div><div class="s-price" id="p-estr">—</div></div>
+      <div class="svc" data-g="svc" data-v="rest"    onclick="pick(this)"><div class="s-name">Restauración Integral</div><div class="s-desc">Para instrumentos históricos o de alto valor. Plan consensuado, seguimiento y documentación completa.</div><div class="s-price">Presupuesto personalizado</div></div>
+      <div class="svc" data-g="svc" data-v="diag"    onclick="pick(this)"><div class="s-name">No sé / Necesito diagnóstico</div><div class="s-desc">Cuéntanos qué notas y lo valoramos. El coste del diagnóstico se descuenta del servicio posterior.</div><div class="s-price">35 – 50 €</div></div>
+    </div>
+    <div class="hr"></div>
+    <div class="field">
+      <label for="f-obs">Observaciones <span class="opt-tag">(opcional)</span></label>
+      <textarea id="f-obs" placeholder="¿Qué notas? ¿Qué quieres conseguir? Cuantos más detalles, mejor."></textarea>
+    </div>
+    <div class="field">
+      <label>Adjunta fotos, vídeo o audio <span class="opt-tag">(opcional)</span></label>
+      <div class="upload" onclick="document.getElementById('file-input').click()">
+        <div class="upload-icon">📎</div>
+        <div class="upload-text">Toca para adjuntar archivos</div>
+        <div class="upload-sub">Fotos · Vídeo del problema · Nota de audio · Máx. 3 archivos, 20 MB</div>
+      </div>
+      <input type="file" id="file-input" multiple accept="image/*,video/*,audio/*" onchange="onFiles(this)">
+      <div id="file-names"></div>
+    </div>
+  </div>
+
+  <!-- ── LOGISTICS ──────────────────────────────── -->
+  <div class="step" id="s-logistics">
+    <div class="eyebrow">Paso 4 de 4</div>
+    <h2>Logística del servicio</h2>
+    <p class="lead">Ya casi terminamos. Dinos cuándo y cómo.</p>
+
+    <p class="sec">Urgencia</p>
+    <div class="g1" id="urg-group">
+      <div class="card" data-g="urg" data-v="normal" onclick="pick(this);urgNotice()"><div class="c-name">Sin urgencia</div><div class="c-desc">Se atiende según disponibilidad del taller</div></div>
+      <div class="card" data-g="urg" data-v="semana" onclick="pick(this);urgNotice()"><div class="c-name">Esta semana <span class="bdg bdg-red">+25%</span></div><div class="c-desc">Atención prioritaria en los próximos 4–5 días</div></div>
+      <div class="card" data-g="urg" data-v="hoy"    onclick="pick(this);urgNotice()"><div class="c-name">Hoy o mañana <span class="bdg bdg-red">+40%</span></div><div class="c-desc">Máxima prioridad. Sujeto a disponibilidad de Ana.</div></div>
+    </div>
+    <div class="notice n-red" id="n-urg">
+      ⚡ El suplemento de urgencia se aplica sobre el precio base del trabajo. Ana te lo confirmará antes de comenzar.
+    </div>
+
+    <div class="hr"></div>
+
+    <p class="sec">¿Cómo nos entregas el instrumento?</p>
+    <div class="g1" id="dlv-group">
+      <div class="card" data-g="dlv" data-v="taller"        onclick="pick(this);dlvChange()"><div class="c-name">Lo llevo al taller</div><div class="c-desc">Sin coste adicional de logística</div></div>
+      <div class="card" data-g="dlv" data-v="conservatorio" onclick="pick(this);dlvChange()"><div class="c-name">Recogida en conservatorio <span class="bdg bdg-blue">+20 €</span></div><div class="c-desc">Acudimos en horario acordado</div></div>
+      <div class="card" data-g="dlv" data-v="domicilio"     onclick="pick(this);dlvChange()"><div class="c-name">Recogida a domicilio <span class="bdg bdg-blue">+35–50 €</span></div><div class="c-desc">Según zona. Ana te confirmará el coste exacto.</div></div>
+    </div>
+    <div class="field" id="f-addr" style="display:none;margin-top:14px;">
+      <label for="f-dir">Dirección de recogida</label>
+      <input type="text" id="f-dir" placeholder="Calle, número, ciudad">
+    </div>
+
+    <div class="hr"></div>
+
+    <div class="field">
+      <label for="f-fecha">Fecha preferida <span class="opt-tag">(opcional)</span></label>
+      <input type="date" id="f-fecha">
+    </div>
+  </div>
+
+  <!-- ── SUMMARY ────────────────────────────────── -->
+  <div class="step" id="s-summary">
+    <div class="eyebrow">Revisa tu solicitud</div>
+    <h2>Casi listo</h2>
+    <p class="lead">Comprueba que todo está correcto antes de enviar.</p>
+
+    <div class="estimate">
+      <div class="est-label">Estimación orientativa</div>
+      <div class="est-amount" id="e-amount">—</div>
+      <div class="est-lines"  id="e-lines"></div>
+      <div class="est-note">Ana te confirmará el precio exacto antes de comenzar cualquier trabajo.</div>
+    </div>
+
+    <div class="sum-block">
+      <div class="sum-sec">
+        <div class="sum-sec-title">Contacto</div>
+        <div class="sum-row"><span class="sum-k">Nombre</span><span class="sum-v" id="ss-nom">—</span></div>
+        <div class="sum-row"><span class="sum-k">Teléfono</span><span class="sum-v" id="ss-tel">—</span></div>
+        <div class="sum-row" id="ss-email-r"><span class="sum-k">Email</span><span class="sum-v" id="ss-email">—</span></div>
+      </div>
+      <div class="sum-sec">
+        <div class="sum-sec-title">Instrumento</div>
+        <div class="sum-row"><span class="sum-k">Tipo</span><span class="sum-v" id="ss-instr">—</span></div>
+        <div class="sum-row"><span class="sum-k">Perfil</span><span class="sum-v" id="ss-seg">—</span></div>
+        <div class="sum-row"><span class="sum-k">Valor</span><span class="sum-v" id="ss-val">—</span></div>
+      </div>
+      <div class="sum-sec">
+        <div class="sum-sec-title">Servicio</div>
+        <div class="sum-row"><span class="sum-k">Tipo</span><span class="sum-v" id="ss-svc">—</span></div>
+        <div class="sum-row" id="ss-obs-r"><span class="sum-k">Notas</span><span class="sum-v" id="ss-obs" style="max-width:58%;text-align:right">—</span></div>
+      </div>
+      <div class="sum-sec">
+        <div class="sum-sec-title">Logística</div>
+        <div class="sum-row"><span class="sum-k">Urgencia</span><span class="sum-v" id="ss-urg">—</span></div>
+        <div class="sum-row"><span class="sum-k">Entrega</span><span class="sum-v" id="ss-dlv">—</span></div>
+        <div class="sum-row"><span class="sum-k">Fecha</span><span class="sum-v" id="ss-fecha">—</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── DONE ───────────────────────────────────── -->
+  <div class="step" id="s-done">
+    <div class="done">
+      <div class="done-ring">✓</div>
+      <h2 class="done-title">¡Solicitud enviada!</h2>
+      <p class="done-desc">Ana revisará tu solicitud y te contactará para confirmar disponibilidad y precio final.</p>
+      <div class="done-box">
+        📱 Te escribiremos al <strong id="done-tel"></strong>.<br>
+        Normalmente en menos de 24 horas en días laborables.
+      </div>
+      <div class="evo">
+        💡 Próximamente podrás crear una cuenta para consultar el historial de tus instrumentos y solicitar nuevos servicios con un solo clic.
+      </div>
+    </div>
+  </div>
+
+</div><!-- /canvas -->
+
+<!-- FOOTER NAV -->
+<nav class="fnav" id="fnav">
+  <div class="fnav-inner">
+    <button class="btn btn-back" id="btn-back" onclick="back()">← Atrás</button>
+    <button class="btn btn-next" id="btn-next" onclick="next()">Continuar →</button>
+  </div>
+</nav>
+
+<script>
+// ═══ DATA ════════════════════════════════════════════════════════
+
+const P = {
+  violin:     {mant:80, opti:180, prof:310, corr:110, estr:240},
+  viola:      {mant:90, opti:200, prof:340, corr:130, estr:270},
+  chelo:      {mant:135,opti:270, prof:470, corr:210, estr:430},
+  contrabajo: {mant:180,opti:360, prof:620, corr:280, estr:580},
+};
+
+const INAME = {violin:'Violín', viola:'Viola', chelo:'Violonchelo', contrabajo:'Contrabajo'};
+const SNAME = {estudiante:'Estudiante', amateur:'Amateur activo', profesional:'Profesional', orquesta:'Músico de orquesta'};
+const VNAME = {'<2k':'Menos de 2.000 €', '2-5k':'2.000 – 5.000 €', '>5k':'Más de 5.000 €'};
+const SVNAME = {mant:'Ajuste de Mantenimiento', opti:'Optimización del Instrumento', prof:'Ajuste Profesional / de Escenario', corr:'Corrección de Problemas', estr:'Intervención Estructural', rest:'Restauración Integral', diag:'Diagnóstico'};
+const UNAME = {normal:'Sin urgencia', semana:'Esta semana (+25%)', hoy:'Hoy o mañana (+40%)'};
+const DNAME = {taller:'Lo llevo al taller', conservatorio:'Recogida en conservatorio', domicilio:'Recogida a domicilio'};
+
+const MOCKS = {
+  '612345678':       {name:'Elena Montoya', sub:'Violín 4/4 · Viola'},
+  'elena@email.com': {name:'Elena Montoya', sub:'Violín 4/4 · Viola'},
+  '655000111':       {name:'Javier Ramos',  sub:'Violonchelo 3/4'},
+};
+
+// ═══ STATE ═══════════════════════════════════════════════════════
+
+const ST = {instr:null, seg:null, valor:null, svc:null, urg:null, dlv:null, returning:false};
+
+// ═══ NAVIGATION ══════════════════════════════════════════════════
+
+const PROGRESS = {
+  's-welcome':0, 's-identify':10, 's-contact':20,
+  's-instrument':40, 's-service':60, 's-logistics':80,
+  's-summary':95, 's-done':100
+};
+
+const CHIPS = {
+  's-welcome':'', 's-identify':'Cliente anterior',
+  's-contact':'1 · Contacto', 's-instrument':'2 · Instrumento',
+  's-service':'3 · Servicio', 's-logistics':'4 · Logística',
+  's-summary':'Resumen', 's-done':'✓ Enviado'
+};
+
+let hist = [];
+let cur  = 's-welcome';
+
+function go(id) {
+  if (id === cur) return;
+  hist.push(cur);
+  cur = id;
+  render();
+}
+
+function back() {
+  if (!hist.length) return;
+  cur = hist.pop();
+  render();
+}
+
+function next() {
+  if (cur === 's-summary') { submit(); return; }
+
+  const newFlow = ['s-contact','s-instrument','s-service','s-logistics','s-summary'];
+  const retFlow = ['s-identify','s-service','s-logistics','s-summary'];
+
+  // Special: from identify, if client found jump to service
+  if (cur === 's-identify') {
+    const found = document.getElementById('cf').style.display !== 'none';
+    go(found ? 's-service' : 's-contact');
+    return;
+  }
+
+  const flow = ST.returning ? retFlow : newFlow;
+  const i = flow.indexOf(cur);
+  if (i >= 0 && i < flow.length - 1) go(flow[i + 1]);
+}
+
+function render() {
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('on'));
+  document.getElementById(cur).classList.add('on');
+
+  // Progress + chip
+  document.getElementById('pbar').style.width = (PROGRESS[cur] || 0) + '%';
+  const chip = document.getElementById('chip');
+  chip.textContent = CHIPS[cur] || '';
+  chip.style.display = CHIPS[cur] ? 'inline-block' : 'none';
+
+  // Footer
+  const fnav = document.getElementById('fnav');
+  const bback = document.getElementById('btn-back');
+  const bnext = document.getElementById('btn-next');
+
+  if (cur === 's-welcome' || cur === 's-done') {
+    fnav.classList.remove('on');
+  } else {
+    fnav.classList.add('on');
+    bback.style.display = hist.length ? 'block' : 'none';
+    bnext.textContent = cur === 's-summary' ? 'Enviar solicitud' : 'Continuar →';
+  }
+
+  if (cur === 's-service')  refreshPrices();
+  if (cur === 's-summary')  buildSummary();
+  window.scrollTo(0, 0);
+}
+
+// ═══ SELECTIONS ══════════════════════════════════════════════════
+
+function pick(el) {
+  const g = el.dataset.g, v = el.dataset.v;
+  el.closest('.g1, .g2, .g3, #urg-group, #dlv-group')
+    ?.querySelectorAll(`[data-g="${g}"]`)
+    .forEach(c => c.classList.remove('on'));
+  el.classList.add('on');
+
+  if (g === 'instr') { ST.instr  = v; refreshPrices(); }
+  if (g === 'seg')     ST.seg   = v;
+  if (g === 'valor') { ST.valor  = v; document.getElementById('n-hival').classList.toggle('on', v === '>5k'); }
+  if (g === 'svc')     ST.svc   = v;
+  if (g === 'urg')     ST.urg   = v;
+  if (g === 'dlv')     ST.dlv   = v;
+}
+
+function urgNotice() {
+  document.getElementById('n-urg').classList.toggle('on', ST.urg === 'semana' || ST.urg === 'hoy');
+}
+
+function dlvChange() {
+  document.getElementById('f-addr').style.display =
+    (ST.dlv === 'conservatorio' || ST.dlv === 'domicilio') ? 'block' : 'none';
+}
+
+// ═══ RETURNING CLIENT ════════════════════════════════════════════
+
+let lookT;
+function lookup(v) {
+  clearTimeout(lookT);
+  lookT = setTimeout(() => {
+    const k = v.trim().toLowerCase().replace(/\s/g,'');
+    const c = MOCKS[k] || MOCKS[v.trim()];
+    document.getElementById('cf').style.display   = c ? 'block' : 'none';
+    document.getElementById('cf-no').classList.toggle('on', !c && k.length > 5);
+    if (c) {
+      document.getElementById('cf-name').textContent = c.name;
+      document.getElementById('cf-sub').textContent  = c.sub;
+      ST.returning = true;
+    }
+  }, 350);
+}
+
+// ═══ PRICES ══════════════════════════════════════════════════════
+
+function refreshPrices() {
+  if (!ST.instr) return;
+  const p = P[ST.instr];
+  const set = (id, v, pre='') => { const e=document.getElementById(id); if(e) e.textContent=pre+v+' €'; };
+  set('p-mant', p.mant);
+  set('p-opti', p.opti);
+  set('p-prof', p.prof);
+  set('p-corr', p.corr, 'Desde ');
+  set('p-estr', p.estr, 'Desde ');
+}
+
+function calcPrice() {
+  if (!ST.instr || !ST.svc) return null;
+  if (ST.svc === 'rest') return {label:'Presupuesto personalizado', lines:[]};
+  if (ST.svc === 'diag') return {label:'35 – 50 €', lines:['Diagnóstico descontable del servicio posterior']};
+
+  const base = P[ST.instr][ST.svc];
+  if (!base) return null;
+
+  let total = base;
+  const lines = [`Base: ${base} €`];
+
+  if (ST.valor === '>5k')    { const s=Math.round(base*.20); total+=s; lines.push(`💎 Alto valor (+20%): +${s} €`); }
+  if (ST.urg === 'semana')   { const s=Math.round(base*.25); total+=s; lines.push(`⚡ Urgencia esta semana (+25%): +${s} €`); }
+  if (ST.urg === 'hoy')      { const s=Math.round(base*.40); total+=s; lines.push(`⚡ Urgencia hoy/mañana (+40%): +${s} €`); }
+  if (ST.dlv === 'conservatorio') { total+=20; lines.push('🚗 Recogida conservatorio: +20 €'); }
+  if (ST.dlv === 'domicilio')     { total+=40; lines.push('🚗 Recogida a domicilio: +35–50 € *'); }
+
+  return {label: total + ' €', lines};
+}
+
+// ═══ SUMMARY ═════════════════════════════════════════════════════
+
+function buildSummary() {
+  const nom   = document.getElementById('f-nombre').value || '—';
+  const tel   = document.getElementById('f-tel').value    || '—';
+  const email = document.getElementById('f-email').value;
+
+  document.getElementById('ss-nom').textContent = nom;
+  document.getElementById('ss-tel').textContent = tel;
+  const er = document.getElementById('ss-email-r');
+  if (email) { document.getElementById('ss-email').textContent = email; er.style.display='flex'; }
+  else          er.style.display = 'none';
+
+  document.getElementById('ss-instr').textContent = INAME[ST.instr] || '—';
+  document.getElementById('ss-seg').textContent   = SNAME[ST.seg]   || '—';
+  document.getElementById('ss-val').textContent   = VNAME[ST.valor] || 'No indicado';
+  document.getElementById('ss-svc').textContent   = SVNAME[ST.svc]  || '—';
+
+  const obs = document.getElementById('f-obs').value;
+  const or  = document.getElementById('ss-obs-r');
+  if (obs) { document.getElementById('ss-obs').textContent = obs.length>80 ? obs.slice(0,80)+'…' : obs; or.style.display='flex'; }
+  else       or.style.display = 'none';
+
+  document.getElementById('ss-urg').textContent = UNAME[ST.urg] || '—';
+  document.getElementById('ss-dlv').textContent = DNAME[ST.dlv] || '—';
+  const fv = document.getElementById('f-fecha').value;
+  document.getElementById('ss-fecha').textContent = fv
+    ? new Date(fv+'T12:00').toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric'})
+    : 'Sin preferencia';
+
+  const pr = calcPrice();
+  if (pr) {
+    document.getElementById('e-amount').textContent = pr.label;
+    document.getElementById('e-lines').innerHTML    = pr.lines.join('<br>');
+  } else {
+    document.getElementById('e-amount').textContent = 'Pendiente de confirmar';
+    document.getElementById('e-lines').innerHTML    = '';
+  }
+}
+
+// ═══ FILES ═══════════════════════════════════════════════════════
+
+function onFiles(inp) {
+  const f = Array.from(inp.files).slice(0,3);
+  document.getElementById('file-names').innerHTML =
+    f.map(x=>`📎 ${x.name} <span style="color:var(--text-3)">(${(x.size/1048576).toFixed(1)} MB)</span>`).join('<br>');
+}
+
+// ═══ SUBMIT ══════════════════════════════════════════════════════
+
+async function submit() {
+  const bnext = document.getElementById('btn-next');
+  const tel   = document.getElementById('f-tel').value || '—';
+
+  // Loading state
+  bnext.textContent = 'Enviando…';
+  bnext.disabled    = true;
+
+  // Build structured payload
+  const pr = calcPrice();
+  const payload = {
+    // Formspree meta
+    _subject: `Nueva solicitud: ${INAME[ST.instr]||'—'} · ${SVNAME[ST.svc]||'—'} · ${document.getElementById('f-nombre').value||'—'}`,
+    _replyto: document.getElementById('f-email').value || tel,
+
+    // Contacto
+    Nombre:      document.getElementById('f-nombre').value || '—',
+    Teléfono:    tel,
+    Email:       document.getElementById('f-email').value || 'No indicado',
+
+    // Instrumento
+    Instrumento: INAME[ST.instr]  || '—',
+    Segmento:    SNAME[ST.seg]    || '—',
+    Valor:       VNAME[ST.valor]  || 'No indicado',
+
+    // Servicio
+    Servicio:       SVNAME[ST.svc] || '—',
+    Observaciones:  document.getElementById('f-obs').value || '—',
+
+    // Logística
+    Urgencia:   UNAME[ST.urg]  || '—',
+    Entrega:    DNAME[ST.dlv]  || '—',
+    Dirección:  document.getElementById('f-dir').value || '—',
+    Fecha:      document.getElementById('f-fecha').value || 'Sin preferencia',
+
+    // Estimación
+    'Estimación orientativa': pr ? pr.label : 'Presupuesto personalizado',
+    'Desglose estimación':    pr ? pr.lines.join(' | ') : '—',
+  };
+
+  try {
+    const res = await fetch('https://formspree.io/f/maqgwqqq', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body:    JSON.stringify(payload),
+    });
+
+    if (res.ok) {
+      document.getElementById('done-tel').textContent = tel;
+      go('s-done');
+    } else {
+      const data = await res.json();
+      throw new Error(data?.error || 'Error desconocido');
+    }
+  } catch (err) {
+    bnext.textContent = 'Enviar solicitud';
+    bnext.disabled    = false;
+    // Inline error notice — no alert()
+    let errBox = document.getElementById('submit-error');
+    if (!errBox) {
+      errBox = document.createElement('div');
+      errBox.id = 'submit-error';
+      errBox.className = 'notice n-red on';
+      errBox.style.marginTop = '12px';
+      document.querySelector('#s-summary').appendChild(errBox);
+    }
+    errBox.textContent = '⚠️ No se pudo enviar la solicitud. Comprueba tu conexión e inténtalo de nuevo.';
+  }
+}
+
+// ═══ INIT ════════════════════════════════════════════════════════
+
+render();
+</script>
+</body>
+</html>
