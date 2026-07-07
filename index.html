@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#F8F2EB">
-  <title>Solicitud de Servicio — Ana Farina</title>
+  <title>Solicitud de Servicio — Ana Fariña</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
@@ -29,6 +29,9 @@
       --blue-light:   #EBF3FB;
       --green:        #2A7A4F;
       --green-light:  #E6F5ED;
+      --amber:        #92600A;
+      --amber-light:  #FEF3C7;
+      --amber-border: #FCD34D;
       --r:            14px;
       --r-sm:         9px;
     }
@@ -57,16 +60,13 @@
       display: flex; align-items: center; justify-content: space-between;
       margin-bottom: 12px;
     }
-    .brand {
-      display: flex; align-items: center; gap: 10px;
-    }
+    .brand { display: flex; align-items: center; gap: 10px; }
     .brand-dot {
-      width: 28px; height: 28px;
-      border-radius: 50%;
+      width: 28px; height: 28px; border-radius: 50%;
       background: var(--coral);
       display: flex; align-items: center; justify-content: center;
-      color: white; font-size: 14px; line-height: 1;
     }
+    .brand-dot svg { width: 16px; height: 16px; fill: white; }
     .brand-name {
       font-family: 'Lora', serif;
       font-size: 13px; font-weight: 600;
@@ -79,26 +79,18 @@
       background: var(--coral-light);
       padding: 3px 9px; border-radius: 20px;
     }
-    .progress-rail {
-      height: 3px; background: var(--border); border-radius: 2px;
-    }
+    .progress-rail { height: 3px; background: var(--border); border-radius: 2px; }
     .progress-bar {
       height: 100%; background: var(--coral); border-radius: 2px;
       transition: width 0.4s ease;
     }
 
     /* ── CANVAS ───────────────────────────────────── */
-    .canvas {
-      max-width: 540px; margin: 0 auto;
-      padding: 32px 16px 120px;
-    }
+    .canvas { max-width: 540px; margin: 0 auto; padding: 32px 16px 120px; }
 
     /* ── STEPS ───────────────────────────────────── */
     .step { display: none; }
-    .step.on {
-      display: block;
-      animation: rise 0.24s ease both;
-    }
+    .step.on { display: block; animation: rise 0.24s ease both; }
     @keyframes rise {
       from { opacity: 0; transform: translateY(12px); }
       to   { opacity: 1; transform: translateY(0); }
@@ -106,18 +98,14 @@
 
     .eyebrow {
       font-size: 11px; font-weight: 600; text-transform: uppercase;
-      letter-spacing: 0.12em; color: var(--coral);
-      margin-bottom: 8px;
+      letter-spacing: 0.12em; color: var(--coral); margin-bottom: 8px;
     }
     h2 {
       font-family: 'Lora', serif;
       font-size: 26px; font-weight: 700; line-height: 1.2;
       color: var(--text); margin-bottom: 10px;
     }
-    .lead {
-      font-size: 15px; color: var(--text-2); line-height: 1.55;
-      margin-bottom: 30px;
-    }
+    .lead { font-size: 15px; color: var(--text-2); line-height: 1.55; margin-bottom: 30px; }
 
     /* ── SECTION LABEL ────────────────────────────── */
     .sec {
@@ -150,33 +138,50 @@
       font-size: 12px; font-weight: 700; color: var(--coral);
     }
 
-    .c-icon { font-size: 26px; line-height: 1; margin-bottom: 8px; }
+    /* ── INSTRUMENT ICON ─────────────────────────── */
+    .c-icon {
+      display: flex; align-items: flex-end; justify-content: center;
+      height: 44px; margin-bottom: 10px;
+    }
+    .c-icon svg { max-height: 44px; width: auto; transition: fill 0.14s, color 0.14s; }
+    .card .c-icon svg { fill: var(--text-3); color: var(--text-3); }
+    .card.on .c-icon svg { fill: var(--coral); color: var(--coral); }
+
+    /* Instrument cards: icono a la izquierda, texto a la derecha */
+    .instr-card {
+      display: flex; align-items: center; gap: 14px;
+      padding: 12px 14px;
+    }
+    .instr-card .c-icon {
+      width: 30px; height: 64px; margin-bottom: 0;
+      flex-shrink: 0; align-items: center; justify-content: center;
+    }
+    .instr-card .c-icon svg { max-height: 64px; }
+    .instr-card .c-text { flex: 1; min-width: 0; }
+
     .c-name { font-size: 14px; font-weight: 600; color: var(--text); }
     .c-desc { font-size: 12px; color: var(--text-2); margin-top: 3px; line-height: 1.4; }
-    .c-price { font-size: 14px; font-weight: 700; color: var(--coral-dark); margin-top: 9px; }
+    .c-price { font-size: 13px; font-weight: 700; color: var(--coral-dark); margin-top: 8px; }
 
-    /* ── SERVICE CARD ────────────────────────────── */
-    .svc {
-      background: var(--white);
-      border: 2px solid var(--border);
-      border-radius: var(--r);
-      padding: 17px 17px 15px;
-      cursor: pointer; position: relative;
-      transition: border-color 0.14s, background 0.14s;
-      user-select: none;
+    /* ── ACCORDION ───────────────────────────────── */
+    .accordion {
+      display: none;
+      margin-top: 12px;
+      background: var(--cream-2);
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      padding: 14px 14px 12px;
+      animation: rise 0.2s ease both;
     }
-    .svc:hover { border-color: var(--coral); }
-    .svc.on   { border-color: var(--coral); background: var(--coral-light); }
-    .svc.on::after {
-      content: '✓';
-      position: absolute; top: 15px; right: 17px;
-      font-size: 13px; font-weight: 700; color: var(--coral);
+    .accordion.on { display: block; margin-bottom: 24px; }
+    .acc-hd {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--text-2);
+      margin-bottom: 4px; display: flex; align-items: center; gap: 6px;
     }
-    .s-name { font-size: 15px; font-weight: 600; color: var(--text); padding-right: 24px; margin-bottom: 5px; }
-    .s-desc { font-size: 13px; color: var(--text-2); line-height: 1.45; margin-bottom: 10px; }
-    .s-price { font-size: 14px; font-weight: 700; color: var(--coral-dark); }
+    .acc-help { font-size: 12px; color: var(--text-3); margin-bottom: 10px; line-height: 1.4; }
 
-    /* ── VALUE GRID ──────────────────────────────── */
+    /* ── VALUE OPTIONS ───────────────────────────── */
     .vopt {
       text-align: center; padding: 11px 6px;
       border: 2px solid var(--border); border-radius: var(--r-sm);
@@ -190,6 +195,87 @@
     .vopt.on { border-color: var(--coral); background: var(--coral-light); }
     .vopt.on strong { color: var(--coral-dark); }
 
+    /* ── ARCO TOGGLE ─────────────────────────────── */
+    .arco-toggle {
+      background: var(--white);
+      border: 2px dashed var(--border);
+      border-radius: var(--r);
+      padding: 14px 16px;
+      display: flex; align-items: center; gap: 14px;
+      cursor: pointer; min-height: 80px;
+      transition: border-color 0.14s, background 0.14s, border-style 0.14s;
+      user-select: none;
+    }
+    .arco-toggle:hover { border-color: var(--coral); }
+    .arco-toggle.on { border-color: var(--coral); border-style: solid; background: var(--coral-light); }
+    .at-icon { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--text-3); overflow: visible; }
+    .arco-toggle.on .at-icon { color: var(--coral); }
+    .at-icon svg { fill: currentColor; transform: rotate(45deg); transform-origin: center; }
+    .at-info { flex: 1; }
+    .at-name { font-size: 14px; font-weight: 600; color: var(--text); }
+    .at-desc { font-size: 12px; color: var(--text-2); margin-top: 2px; }
+    .at-chip {
+      width: 26px; height: 26px; border-radius: 50%;
+      background: var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px; font-weight: 700; color: var(--text-2);
+      flex-shrink: 0; transition: background 0.14s, color 0.14s;
+    }
+    .arco-toggle.on .at-chip { background: var(--coral); color: white; font-size: 12px; }
+
+    /* ── ARCO SERVICE ROWS ───────────────────────── */
+    .arco-svc-list { display: grid; grid-template-columns: 1fr; gap: 8px; }
+    .asvc {
+      background: var(--white);
+      border: 2px solid var(--border);
+      border-radius: var(--r-sm);
+      padding: 12px 14px;
+      display: flex; align-items: center; gap: 10px;
+      cursor: pointer; user-select: none;
+      transition: border-color 0.14s, background 0.14s;
+    }
+    .asvc:hover { border-color: var(--coral); }
+    .asvc.on { border-color: var(--coral); background: var(--coral-light); }
+    .asvc-info { flex: 1; min-width: 0; }
+    .asvc-name { font-size: 14px; font-weight: 600; color: var(--text); }
+    .asvc-price { font-size: 12px; color: var(--text-2); margin-top: 2px; }
+    .qty-ctrl {
+      display: none;
+      align-items: center; gap: 6px; flex-shrink: 0;
+    }
+    .asvc.on .qty-ctrl { display: flex; }
+    .qty-btn {
+      width: 26px; height: 26px; border-radius: 50%;
+      background: var(--coral); color: white;
+      border: none; font-size: 18px; line-height: 1;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      font-weight: 700; flex-shrink: 0; padding: 0;
+      transition: background 0.1s;
+    }
+    .qty-btn:hover { background: var(--coral-dark); }
+    .qty-num {
+      font-size: 15px; font-weight: 700;
+      min-width: 18px; text-align: center; color: var(--coral-dark);
+    }
+
+    /* ── SERVICE CARD ────────────────────────────── */
+    .svc {
+      background: var(--white); border: 2px solid var(--border);
+      border-radius: var(--r); padding: 17px 17px 15px;
+      cursor: pointer; position: relative;
+      transition: border-color 0.14s, background 0.14s;
+      user-select: none;
+    }
+    .svc:hover { border-color: var(--coral); }
+    .svc.on   { border-color: var(--coral); background: var(--coral-light); }
+    .svc.on::after {
+      content: '✓'; position: absolute; top: 15px; right: 17px;
+      font-size: 13px; font-weight: 700; color: var(--coral);
+    }
+    .s-name { font-size: 15px; font-weight: 600; color: var(--text); padding-right: 24px; margin-bottom: 5px; }
+    .s-desc { font-size: 13px; color: var(--text-2); line-height: 1.45; margin-bottom: 10px; }
+    .s-price { font-size: 14px; font-weight: 700; color: var(--coral-dark); }
+
     /* ── BADGES ───────────────────────────────────── */
     .bdg {
       display: inline-flex; align-items: center;
@@ -197,9 +283,9 @@
       font-size: 11px; font-weight: 600; margin-left: 6px;
       vertical-align: middle; line-height: 1.4;
     }
-    .bdg-red  { background: #FEE2E2; color: var(--red); }
-    .bdg-blue { background: var(--blue-light); color: var(--blue); }
-    .bdg-gold { background: var(--coral-light); color: var(--coral-dark); }
+    .bdg-amber { background: var(--amber-light); color: var(--amber); }
+    .bdg-blue  { background: var(--blue-light);  color: var(--blue); }
+    .bdg-gold  { background: var(--coral-light); color: var(--coral-dark); }
 
     /* ── NOTICES ─────────────────────────────────── */
     .notice {
@@ -212,6 +298,19 @@
     .n-red   { background: var(--red-light);   border: 1px solid #FECACA; color: #991B1B; }
     .n-blue  { background: var(--blue-light);  border: 1px solid #BFDBFE; color: #1E40AF; }
     .n-green { background: var(--green-light); border: 1px solid #A7F3D0; color: #065F46; }
+    .n-amber { background: var(--amber-light); border: 1px solid var(--amber-border); color: var(--amber); }
+
+    /* ── SECTION DIVIDER ─────────────────────────── */
+    .sec-divider {
+      display: flex; align-items: center; gap: 12px;
+      margin: 24px 0 20px;
+    }
+    .sec-divider-line { flex: 1; height: 1px; background: var(--border); }
+    .sec-divider-label {
+      font-size: 10px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.12em; color: var(--text-3);
+      white-space: nowrap;
+    }
 
     /* ── FORM ────────────────────────────────────── */
     .field { margin-bottom: 20px; }
@@ -246,18 +345,49 @@
     .upload-text { font-size: 13px; font-weight: 600; color: var(--text-2); }
     .upload-sub  { font-size: 11px; margin-top: 4px; }
     #file-input { display: none; }
-    #file-names { margin-top: 9px; font-size: 12px; color: var(--text-2); line-height: 1.8; }
+    #file-names { margin-top: 9px; }
+    .file-row { display: flex; align-items: center; gap: 8px; padding: 5px 10px; background: var(--cream-2); border: 1px solid var(--border); border-radius: var(--r-sm); margin-top: 6px; }
+    .file-name { flex: 1; font-size: 12px; color: var(--text-2); line-height: 1.4; word-break: break-all; }
+    .file-remove { flex-shrink: 0; background: none; border: none; color: var(--text-3); cursor: pointer; font-size: 14px; padding: 2px 4px; border-radius: 4px; line-height: 1; transition: color 0.12s, background 0.12s; }
+    .file-remove:hover { background: var(--red-light); color: var(--red); }
+    .upload.full { opacity: 0.45; pointer-events: none; }
 
     /* ── DIVIDER ─────────────────────────────────── */
     .hr { height: 1px; background: var(--border); margin: 24px 0; }
 
-    /* ── RETURNING CLIENT ────────────────────────── */
-    .client-found {
-      background: var(--white); border: 2px solid var(--coral);
-      border-radius: var(--r); padding: 17px; margin-bottom: 18px;
+    /* ── RGPD ────────────────────────────────────── */
+    .rgpd-wrap {
+      background: var(--cream-2);
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      padding: 14px 16px;
+      margin-top: 20px;
     }
-    .cf-name { font-family: 'Lora', serif; font-size: 18px; font-weight: 700; margin-bottom: 4px; }
-    .cf-sub  { font-size: 13px; color: var(--text-2); }
+    .rgpd-label {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 13px; color: var(--text-2); line-height: 1.55; cursor: pointer;
+      font-weight: normal;
+      margin-bottom: 0;
+    }
+    .rgpd-label input[type="checkbox"] {
+      width: 18px; height: 18px;
+      flex-shrink: 0; margin-top: 2px;
+      accent-color: var(--coral); cursor: pointer;
+    }
+    .rgpd-label a { color: var(--coral); text-decoration: none; }
+    .rgpd-label a:hover { text-decoration: underline; }
+
+    /* ── ERROR MESSAGE ───────────────────────────── */
+    .err-msg {
+      display: none;
+      background: var(--red-light);
+      border: 1px solid #FECACA;
+      color: #991B1B;
+      font-size: 13px; font-weight: 500;
+      padding: 10px 14px; border-radius: var(--r-sm);
+      margin-top: 14px;
+    }
+    .err-msg.on { display: block; }
 
     /* ── SUMMARY ─────────────────────────────────── */
     .estimate {
@@ -281,9 +411,7 @@
       background: var(--white); border: 1px solid var(--border);
       border-radius: var(--r); overflow: hidden; margin-bottom: 14px;
     }
-    .sum-sec {
-      padding: 15px 17px; border-bottom: 1px solid var(--border);
-    }
+    .sum-sec { padding: 15px 17px; border-bottom: 1px solid var(--border); }
     .sum-sec:last-child { border-bottom: none; }
     .sum-sec-title {
       font-size: 10px; font-weight: 700; text-transform: uppercase;
@@ -299,15 +427,14 @@
     .sum-v { font-weight: 500; text-align: right; }
 
     /* ── ENTRY SCREEN ────────────────────────────── */
-    .entry {
-      text-align: center; padding: 28px 0 0;
-    }
+    .entry { text-align: center; padding: 28px 0 0; }
     .entry-art {
       width: 72px; height: 72px;
       background: var(--coral); border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      font-size: 32px; margin: 0 auto 20px;
+      margin: 0 auto 20px;
     }
+    .entry-art svg { width: 36px; height: 36px; fill: white; }
     .entry-title {
       font-family: 'Lora', serif;
       font-size: 28px; font-weight: 700; line-height: 1.2;
@@ -328,8 +455,6 @@
     .ebtn-sub { font-size: 12px; font-weight: 400; opacity: 0.7; }
     .ebtn-primary  { background: var(--coral); color: white; }
     .ebtn-primary:hover  { background: var(--coral-dark); }
-    .ebtn-secondary { background: var(--white); border-color: var(--border); color: var(--text); }
-    .ebtn-secondary:hover { border-color: var(--coral); }
 
     /* ── DONE SCREEN ─────────────────────────────── */
     .done { text-align: center; padding: 40px 0 20px; }
@@ -346,14 +471,6 @@
       border-radius: var(--r); padding: 17px;
       font-size: 13px; color: var(--text-2);
       text-align: left; line-height: 1.75; margin-bottom: 20px;
-    }
-
-    /* ── EVOLUTION PILL ──────────────────────────── */
-    .evo {
-      background: #EFF3FF; border: 1px solid #C7D7FB;
-      border-radius: var(--r-sm); padding: 11px 14px;
-      font-size: 12px; color: #374FC0; line-height: 1.5;
-      margin-top: 16px; text-align: left;
     }
 
     /* ── FOOTER NAV ──────────────────────────────── */
@@ -375,9 +492,7 @@
       transition: opacity 0.14s, transform 0.1s; outline: none;
     }
     .btn:active { transform: scale(0.98); }
-    .btn-next {
-      background: var(--coral); color: white; flex: 1;
-    }
+    .btn-next { background: var(--coral); color: white; flex: 1; }
     .btn-next:hover { opacity: 0.88; }
     .btn-back {
       background: transparent; color: var(--text-2);
@@ -385,26 +500,76 @@
     }
     .btn-back:hover { border-color: var(--text-3); }
 
-    /* ── WAVE DECO (subtle) ──────────────────────── */
-    .wave-deco {
-      width: 100%; height: 40px; overflow: hidden;
-      opacity: 0.25; margin-bottom: -10px;
-    }
+    @media (min-width: 540px) { .fnav-inner { padding: 0; } }
 
-    @media (min-width: 540px) {
-      .fnav-inner { padding: 0; }
+    /* ── SCREEN READER ONLY ──────────────────────── */
+    .sr-only {
+      position: absolute; width: 1px; height: 1px;
+      padding: 0; margin: -1px; overflow: hidden;
+      clip: rect(0,0,0,0); white-space: nowrap; border: 0;
     }
   </style>
 </head>
 <body>
+
+<!-- ── SVG DEFS (reusable icons) ──────────────────────────── -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <!-- Violín — paths de Assets/Violin.svg, viewBox recortado al instrumento -->
+  <symbol id="ico-violin" viewBox="816 508 368 984">
+    <path fill="currentColor" d="M1023 672.356C1026.93 788.137 1029.37 858.24 1030.32 882.666L1036.84 1115.88L1045.83 1115.63L1039.51 889.099C1079.2 891.473 1109.86 909.937 1131.46 944.497C1141.51 962.672 1146.55 980.265 1146.55 997.271V1004.8C1146.55 1019.49 1141.32 1039.4 1130.9 1064.53C1130.9 1065.7 1130.69 1068.21 1130.31 1072.06C1130.31 1077.87 1133.2 1084.82 1139.01 1092.94L1139.58 1096.99C1138.41 1100.09 1136.11 1101.64 1132.63 1101.64C1126.82 1100.09 1122.96 1099.32 1121.03 1099.32C1114.08 1099.32 1107.89 1105.7 1102.47 1118.45C1099.38 1125.8 1097.85 1134.69 1097.85 1145.13V1148.6C1097.85 1186.1 1104.79 1211.42 1118.72 1224.56C1124.12 1228.05 1129.73 1229.97 1135.52 1230.35C1137.85 1230.35 1142.49 1228.43 1149.45 1224.56H1150.61C1154.85 1224.56 1158.53 1229.2 1161.63 1238.48V1239.64C1161.63 1241.58 1159.69 1245.05 1155.83 1250.08C1155.04 1255.1 1154.66 1258.59 1154.66 1260.51C1154.66 1265.93 1159.5 1279.84 1169.16 1302.27C1174.18 1318.5 1176.69 1331.45 1176.69 1341.11V1366.61C1176.69 1389.04 1167.41 1413.2 1148.87 1439.1C1138.04 1453.8 1120.07 1465.2 1094.94 1473.32C1068.27 1481.05 1045.07 1484.91 1025.37 1484.91H975.497C946.883 1484.91 915.774 1477.96 882.139 1464.03C859.715 1451.67 842.913 1430.98 831.701 1401.99C825.89 1385 823 1368.95 823 1353.87C823 1329.52 829.948 1302.64 843.876 1273.27C845.424 1268.25 846.387 1263.8 846.766 1259.93C846.766 1253.75 844.255 1247.37 839.233 1240.79L838.649 1238.48C842.897 1229.2 846.955 1224.56 850.84 1224.56L864.168 1230.35H866.489C876.154 1230.35 884.46 1224.37 891.424 1212.38C899.146 1195.77 903.014 1173.93 903.014 1146.86V1146.28C903.014 1123.87 897.013 1108.6 885.043 1100.47C881.948 1099.71 879.816 1099.32 878.663 1099.32L868.226 1101.64C863.962 1100.86 861.846 1098.73 861.846 1095.26C861.846 1094.5 864.167 1089.67 868.81 1080.76L871.131 1072.06C871.131 1068.59 866.488 1053.9 857.203 1028C854.882 1016.02 853.729 1006.94 853.729 1000.75C853.729 969.448 866.488 941.419 892.007 916.674C905.903 903.915 924.647 895.419 948.239 891.155L970.284 888.25L970.853 883.623L977.958 672.356H1023Z"/>
+    <path fill="currentColor" d="M1007.96 516C1012.21 516 1014.34 520.453 1014.34 529.328C1014.34 531.666 1017.43 532.818 1023.62 532.818C1024.78 536.292 1025.74 539.971 1026.51 543.824H1031.74C1035.59 543.824 1037.54 545.373 1037.54 548.468V549.636C1037.54 555.052 1034.05 559.695 1027.1 563.548C1022.08 569.738 1019.57 574.57 1019.57 578.045V583.84L1020.13 588.482H1043.33C1045.64 586.161 1048.35 584.992 1051.45 584.992H1057.83C1064.78 584.992 1069.81 587.519 1072.91 592.54V595.43C1069.81 600.467 1064.78 602.978 1057.83 602.979H1052.03C1048.94 602.978 1046.03 601.636 1043.33 598.92H1020.14L1021.89 629.066H1042.75V621.533C1042.75 616.512 1045.84 613.985 1052.03 613.985H1057.25C1062.27 613.986 1066.72 617.855 1070.59 625.592C1071.35 627.518 1071.74 629.462 1071.74 631.388V632.54C1069.82 644.92 1064.59 651.095 1056.09 651.095H1052.62C1046.03 651.095 1042.75 647.241 1042.75 639.504H1021.89C1022.17 647.652 1022.44 655.602 1022.7 663.356H978.261L978.4 659.214H952.297C951.918 659.216 951.144 661.931 949.976 667.347C947.654 669.668 944.954 670.82 941.859 670.82H937.232C929.116 670.82 924.078 664.646 922.152 652.266C924.458 639.901 930.065 633.711 938.971 633.711H940.123C947.86 633.711 951.729 637.202 951.729 644.149V648.792H978.969C979.348 638.354 979.553 630.616 979.553 625.595V624.426L980.137 618.046H951.144C951.144 621.93 948.238 624.047 942.442 624.426H937.231C927.173 622.878 922.151 618.046 922.15 609.93C924.851 601.434 929.683 597.187 936.647 597.187H943.611C949.012 597.187 951.728 599.697 951.728 604.719V607.624H980.136L981.289 575.726C977.815 567.23 972.793 561.419 966.224 558.324C964.281 553.302 963.318 550.018 963.318 548.47C963.318 545.769 965.056 544.222 968.529 543.827H974.909C974.909 536.105 976.836 532.237 980.721 532.236C984.574 532.236 986.517 530.31 986.517 526.441C986.516 519.49 988.82 516 993.463 516H1007.96Z"/>
+  </symbol>
+  <!-- Viola — paths de Assets/Viola.svg -->
+  <symbol id="ico-viola" viewBox="784 422 432 1156">
+    <path fill="currentColor" d="M1027.3 613.95C1031.92 750.23 1034.79 832.719 1035.91 861.418L1043.58 1135.75L1052.57 1135.5L1045.12 868.854C1092.6 871.244 1129.2 892.999 1154.9 934.119C1166.72 955.502 1172.65 976.199 1172.65 996.207V1005.07C1172.65 1022.35 1166.5 1045.77 1154.23 1075.33C1154.23 1076.71 1153.99 1079.66 1153.55 1084.19C1153.55 1091.03 1156.95 1099.2 1163.79 1108.75L1164.45 1113.53C1163.08 1117.17 1160.37 1118.99 1156.28 1118.99C1149.44 1117.17 1144.89 1116.26 1142.62 1116.26C1134.45 1116.26 1127.17 1123.77 1120.8 1138.78C1117.15 1147.42 1115.35 1157.88 1115.35 1170.16V1174.24C1115.35 1218.37 1123.53 1248.15 1139.91 1263.6C1146.27 1267.71 1152.86 1269.98 1159.68 1270.42C1162.41 1270.42 1167.87 1268.16 1176.07 1263.6H1177.42C1182.42 1263.6 1186.75 1269.07 1190.39 1279.99V1281.35C1190.39 1283.63 1188.1 1287.72 1183.57 1293.63C1182.64 1299.53 1182.2 1303.64 1182.2 1305.91C1182.2 1312.28 1187.88 1328.65 1199.25 1355.03C1205.16 1374.13 1208.11 1389.36 1208.11 1400.73V1430.73C1208.11 1457.11 1197.19 1485.54 1175.38 1516.01C1162.63 1533.3 1141.49 1546.72 1111.93 1556.27C1080.56 1565.37 1053.26 1569.9 1030.08 1569.9H971.41C937.746 1569.9 901.147 1561.73 861.576 1545.34C835.195 1530.79 815.427 1506.46 802.236 1472.35C795.399 1452.36 792 1433.48 792 1415.74C792 1387.09 800.174 1355.47 816.56 1320.92C818.38 1315.01 819.514 1309.77 819.96 1305.22C819.96 1297.96 817.006 1290.45 811.098 1282.7L810.411 1279.99C815.408 1269.07 820.183 1263.6 824.753 1263.6L840.433 1270.42H843.164C854.534 1270.42 864.306 1263.38 872.499 1249.28C881.584 1229.74 886.135 1204.04 886.135 1172.2V1171.51C886.135 1145.15 879.075 1127.18 864.993 1117.62C861.352 1116.72 858.843 1116.26 857.486 1116.26L845.207 1118.99C840.191 1118.08 837.701 1115.57 837.701 1111.49C837.701 1110.59 840.432 1104.91 845.894 1094.43L848.625 1084.19C848.625 1080.11 843.162 1062.83 832.238 1032.36C829.507 1018.26 828.151 1007.58 828.151 1000.29C828.151 963.473 843.163 930.497 873.185 901.385C889.534 886.374 911.586 876.379 939.342 871.363L965.276 867.945L965.945 862.502L974.306 613.95H1027.3Z"/>
+    <path fill="currentColor" d="M1009.6 430C1014.6 430 1017.11 435.24 1017.11 445.681C1017.11 448.43 1020.75 449.786 1028.03 449.786C1029.39 453.873 1030.52 458.202 1031.43 462.735H1037.58C1042.11 462.735 1044.4 464.556 1044.4 468.197V469.572C1044.4 475.944 1040.29 481.406 1032.12 485.939C1026.21 493.222 1023.26 498.906 1023.26 502.994V509.812L1023.93 515.274H1051.22C1053.93 512.543 1057.12 511.168 1060.77 511.168H1068.27C1076.45 511.168 1082.37 514.141 1086.01 520.048V523.448C1082.37 529.374 1076.45 532.328 1068.27 532.328H1061.45C1057.81 532.328 1054.39 530.75 1051.22 527.555H1023.93L1025.99 563.021H1050.53V554.158C1050.53 548.25 1054.17 545.278 1061.46 545.278H1067.59C1073.49 545.278 1078.73 549.831 1083.29 558.934C1084.18 561.199 1084.64 563.485 1084.64 565.751V567.107C1082.37 581.672 1076.22 588.937 1066.23 588.937H1062.14C1054.4 588.936 1050.53 584.403 1050.53 575.3H1025.99C1026.33 585.442 1026.67 595.326 1027 604.95H974.608L974.826 598.488H944.116C943.67 598.488 942.76 601.684 941.385 608.057C938.654 610.787 935.477 612.144 931.836 612.144H926.393C916.844 612.143 910.916 604.879 908.65 590.314C911.362 575.768 917.959 568.485 928.437 568.485H929.793C938.896 568.485 943.448 572.592 943.448 580.766V586.228H975.495C975.941 573.948 976.182 564.844 976.182 558.937V557.562L976.869 550.056H942.759C942.759 554.625 939.34 557.116 932.521 557.562H926.391C914.557 555.741 908.648 550.055 908.648 540.506C911.825 530.511 917.511 525.515 925.704 525.515H933.896C940.25 525.515 943.445 528.468 943.445 534.376V537.794H976.868L978.224 500.267C974.137 490.272 968.229 483.434 960.5 479.793C958.215 473.885 957.082 470.021 957.082 468.2C957.082 465.023 959.126 463.203 963.213 462.738H970.719C970.719 453.653 972.985 449.103 977.556 449.103C982.089 449.103 984.374 446.835 984.374 442.284C984.373 434.106 987.085 430 992.547 430H1009.6Z"/>
+  </symbol>
+  <!-- Violonchelo — paths de Assets/Violonchelo.svg (incluye espiga) -->
+  <symbol id="ico-chelo" viewBox="722 182 557 1724">
+    <path fill="currentColor" d="M1035.89 429.133C1041.89 606.221 1045.62 713.441 1047.08 750.791L1057.05 1107.47L1069.04 1107.13L1059.36 760.519C1120.93 763.703 1168.41 791.98 1201.77 845.349C1217.13 873.146 1224.83 900.052 1224.83 926.062V937.582C1224.83 960.043 1216.84 990.498 1200.9 1028.92C1200.9 1030.71 1200.59 1034.55 1200.01 1040.44C1200.01 1049.33 1204.43 1059.96 1213.32 1072.37L1214.19 1078.58C1212.4 1083.31 1208.87 1085.68 1203.56 1085.68C1194.67 1083.31 1188.75 1082.13 1185.81 1082.13C1175.18 1082.13 1165.71 1091.89 1157.43 1111.4C1152.7 1122.63 1150.35 1136.23 1150.35 1152.19V1157.51C1150.35 1214.87 1160.98 1253.58 1182.28 1273.67C1190.54 1279.01 1199.12 1281.96 1207.98 1282.54C1211.53 1282.54 1218.63 1279.59 1229.28 1273.67H1231.04C1237.54 1273.68 1243.17 1280.78 1247.9 1294.98V1296.74C1247.9 1299.71 1244.93 1305.02 1239.04 1312.7C1237.83 1320.38 1237.25 1325.72 1237.25 1328.67C1237.25 1336.95 1244.64 1358.23 1259.42 1392.52C1267.1 1417.35 1270.94 1437.16 1270.94 1451.94V1490.94C1270.94 1525.23 1256.74 1562.19 1228.39 1601.79C1211.82 1624.28 1184.33 1641.72 1145.91 1654.13C1105.12 1665.96 1069.64 1671.86 1039.5 1671.86H963.23C919.468 1671.86 871.89 1661.23 820.448 1639.93C786.153 1621.02 760.456 1589.38 743.308 1545.04C734.42 1519.05 730 1494.51 730 1471.45C730 1434.21 740.626 1393.1 761.928 1348.18C764.295 1340.5 765.768 1333.69 766.348 1327.77C766.348 1318.33 762.507 1308.57 754.827 1298.5L753.934 1294.97C760.43 1280.77 766.637 1273.67 772.578 1273.67L792.962 1282.54H796.513C811.293 1282.54 823.997 1273.38 834.647 1255.05C846.458 1229.64 852.374 1196.24 852.374 1154.85V1153.96C852.374 1119.68 843.196 1096.33 824.89 1083.89C820.157 1082.73 816.896 1082.13 815.132 1082.13L799.168 1085.68C792.647 1084.5 789.411 1081.24 789.411 1075.92C789.412 1074.76 792.961 1067.37 800.062 1053.75L803.611 1040.44C803.611 1035.13 796.511 1012.67 782.311 973.062C778.76 954.73 776.997 940.844 776.997 931.376C776.997 883.508 796.511 840.64 835.539 802.795C856.793 783.281 885.461 770.287 921.543 763.767L955.258 759.323L956.128 752.247L966.995 429.133H1035.89Z"/>
+    <path fill="currentColor" d="M1012.88 190C1019.38 190 1022.64 196.811 1022.64 210.384C1022.64 213.959 1027.37 215.722 1036.84 215.722C1038.6 221.035 1040.07 226.663 1041.26 232.556H1049.25C1055.14 232.556 1058.12 234.923 1058.12 239.656V241.443C1058.12 249.727 1052.78 256.828 1042.15 262.721C1034.47 272.188 1030.63 279.577 1030.63 284.892V293.755L1031.5 300.855H1066.98C1070.5 297.305 1074.66 295.518 1079.39 295.518H1089.15C1099.78 295.518 1107.48 299.383 1112.21 307.062V311.481C1107.48 319.185 1099.78 323.025 1089.15 323.025H1080.29C1075.55 323.025 1071.11 320.973 1066.98 316.819H1031.5L1034.18 362.925H1066.09V351.404C1066.09 343.724 1070.82 339.86 1080.29 339.86H1088.26C1095.94 339.86 1102.75 345.778 1108.67 357.611C1109.83 360.557 1110.43 363.529 1110.43 366.475V368.237C1107.48 387.172 1099.49 396.615 1086.5 396.615H1081.18C1071.11 396.615 1066.09 390.722 1066.09 378.889H1034.18C1034.7 394.084 1035.2 408.832 1035.68 423.133H967.196L967.671 409.032H927.749C927.169 409.032 925.986 413.186 924.198 421.471C920.648 425.021 916.518 426.784 911.785 426.784H904.709C892.295 426.784 884.59 417.34 881.645 398.406C885.17 379.495 893.745 370.029 907.366 370.029H909.129C920.963 370.029 926.881 375.367 926.881 385.993V393.094H968.541C969.121 377.13 969.435 365.294 969.435 357.615V355.828L970.327 346.07H925.984C925.984 352.011 921.541 355.248 912.677 355.828H904.706C889.322 353.461 881.643 346.07 881.643 333.656C885.773 320.663 893.163 314.167 903.813 314.167H914.464C922.724 314.167 926.878 318.007 926.878 325.688V330.131H970.326L972.089 281.345C966.776 268.352 959.095 259.464 949.048 254.73C946.078 247.051 944.605 242.028 944.604 239.66C944.604 235.53 947.261 233.164 952.574 232.56H962.332C962.332 220.749 965.278 214.833 971.221 214.833C977.113 214.833 980.084 211.886 980.084 205.97C980.083 195.339 983.608 190 990.708 190H1012.88Z"/>
+    <path fill="currentColor" d="M999.816 1898.12L1012.76 1682.65H986.869L999.816 1898.12Z"/>
+  </symbol>
+  <!-- Contrabajo — paths de Assets/Contrabajo.svg -->
+  <symbol id="ico-contrabajo" viewBox="699 209 605 1627">
+    <path fill="currentColor" d="M983.427 411.524L1028.81 411.535L1052.63 1126.07L1066.57 1126.01C1061.61 1002.33 1057.49 878.628 1054.23 754.898C1069.27 777.608 1101.11 800.356 1125.42 816.174C1217.88 876.359 1288.18 980.43 1242.65 1093.1C1236.88 1106.45 1230.73 1106.25 1219.16 1110.47C1150.39 1135.56 1174.26 1227.38 1189.92 1279.83C1195.59 1298.79 1209.92 1325.33 1228.36 1334.1C1241.74 1340.44 1263.54 1339.28 1277.53 1345.99C1287.49 1350.78 1292.68 1367.18 1295.28 1377.07C1320.86 1474.31 1329.85 1595.27 1280.61 1686.6C1243.07 1749.28 1194.22 1786.13 1123 1804.17C1028.61 1828.07 898.383 1823.78 813.502 1772.35C755.215 1733.29 727.806 1694.95 707.629 1622.97C688.063 1553.16 696.605 1423.98 726.153 1354.16C735.057 1333.13 788.115 1350.59 808.329 1310.76C832.768 1262.62 843.787 1214.98 837.899 1161.55C835.328 1142.52 816.522 1119.4 798.162 1112.53C765.905 1106.31 762.654 1077.56 757.95 1048.84C742.966 957.348 804.443 872.906 876.455 823.745C920.987 793.343 941.713 779.119 973.393 735.981L983.427 411.524Z"/>
+    <path fill="currentColor" d="M991.679 227.006C991.678 220.344 993.887 217 998.336 217H1012.23C1016.3 217 1018.34 221.267 1018.34 229.772C1018.34 232.012 1021.31 233.116 1027.24 233.116C1028.34 236.445 1029.27 239.971 1030.01 243.663H1035.02C1038.71 243.663 1040.57 245.146 1040.57 248.112V249.232C1040.57 254.422 1037.23 258.871 1030.57 262.563C1025.76 268.495 1023.35 273.125 1023.35 276.455V282.008L1023.89 286.457H1046.12C1048.33 284.233 1050.94 283.113 1053.9 283.113H1060.02C1066.67 283.113 1071.5 285.534 1074.47 290.345V293.115C1071.5 297.942 1066.67 300.348 1060.02 300.348H1054.46C1051.5 300.348 1048.71 299.062 1046.12 296.459H1023.9L1025.58 325.347H1045.57V318.129C1045.57 313.316 1048.53 310.896 1054.46 310.896H1059.46C1064.27 310.896 1068.54 314.603 1072.24 322.018C1072.97 323.864 1073.35 325.726 1073.35 327.571V328.676C1071.5 340.539 1066.49 346.456 1058.35 346.456H1055.02C1048.71 346.456 1045.57 342.764 1045.57 335.349H1025.58C1026.36 358.429 1027.08 379.861 1027.76 399.645L982.378 399.558L983.902 354.236H958.888C958.525 354.236 957.784 356.838 956.664 362.029C954.439 364.254 951.852 365.358 948.886 365.358H944.453C936.675 365.358 931.847 359.442 930.002 347.578C932.211 335.729 937.583 329.798 946.118 329.798H947.222C954.637 329.798 958.344 333.143 958.344 339.8V344.249H984.447C984.81 334.247 985.007 326.832 985.007 322.02V320.9L985.566 314.787H957.783C957.783 318.509 954.999 320.537 949.445 320.9H944.451C934.812 319.417 930 314.787 930 307.009C932.588 298.868 937.218 294.798 943.892 294.798H950.565C955.74 294.798 958.343 297.204 958.343 302.016V304.8H985.565L986.67 274.233C983.341 266.092 978.529 260.523 972.233 257.557C970.372 252.745 969.449 249.598 969.449 248.114C969.449 245.527 971.114 244.044 974.443 243.666H980.557C980.557 236.266 982.403 232.559 986.126 232.559C989.818 232.559 991.679 230.712 991.679 227.006Z"/>
+  </symbol>
+  <!-- Arco vertical real — paths de Assets/Arco.svg, viewBox recortado al instrumento -->
+  <symbol id="ico-arco-v" viewBox="994 168 80 1662">
+    <path fill="currentColor" d="M1062.48 1682.65H1023.29V1776.03H1062.48C1065 1776.03 1067.04 1773.99 1067.04 1771.47V1687.21C1067.04 1684.69 1065 1682.65 1062.48 1682.65ZM1048.76 1750.6C1045.41 1750.6 1042.69 1741.08 1042.69 1729.34C1042.69 1717.6 1045.41 1708.07 1048.76 1708.07C1052.11 1708.07 1054.82 1717.6 1054.82 1729.34C1054.82 1741.08 1052.11 1750.6 1048.76 1750.6Z"/>
+    <path fill="currentColor" d="M1037.56 193.563L1012.58 183.551V174H1037.56V193.563Z"/>
+    <path fill="currentColor" d="M1037.5 186.304L1032.5 186.37L1052.3 1691.51L1057.31 1691.44L1037.5 186.304Z"/>
+    <path fill="currentColor" d="M1051.51 1671.79H1057.86C1058.67 1671.79 1059.34 1672.46 1059.34 1673.28V1688.12H1050.03V1673.28C1050.03 1672.46 1050.7 1671.79 1051.51 1671.79Z"/>
+    <path fill="currentColor" d="M1021.77 174H1010.01L1000 1821.9C1000 1824.69 1007.11 1826.96 1015.89 1826.96C1024.67 1826.96 1031.78 1824.69 1031.78 1821.9L1021.77 174Z"/>
+  </symbol>
+  <!-- Arco horizontal (custom, decorativo) -->
+  <symbol id="ico-arco" viewBox="0 0 52 14">
+    <rect x="1" y="5" width="4" height="7" rx="1"/>
+    <path d="M5,8 Q25,4 49,6.5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <line x1="5" y1="10" x2="49" y2="10" stroke="currentColor" stroke-width="0.8" stroke-dasharray="2,2"/>
+    <polygon points="47,5 51,8 47,11"/>
+  </symbol>
+  <!-- Brand logo (small bow) -->
+  <symbol id="ico-brand" viewBox="0 0 20 20">
+    <path d="M3,14 C5,8 10,5 17,7" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <line x1="3" y1="15" x2="17" y2="15" stroke="white" stroke-width="1" opacity="0.6"/>
+    <circle cx="3" cy="14.5" r="2" fill="white"/>
+  </symbol>
+</svg>
+
+<!-- Screen reader announcer -->
+<div aria-live="polite" aria-atomic="true" class="sr-only" id="step-announcer"></div>
 
 <!-- HEADER -->
 <header class="header">
   <div class="header-inner">
     <div class="header-top">
       <div class="brand">
-        <div class="brand-dot">🎻</div>
-        <span class="brand-name">Ana Farina</span>
+        <div class="brand-dot">
+          <svg><use href="#ico-brand"/></svg>
+        </div>
+        <span class="brand-name">Ana Fariña</span>
       </div>
       <span class="step-chip" id="chip"></span>
     </div>
@@ -419,39 +584,15 @@
   <!-- ── WELCOME ─────────────────────────────────── -->
   <div class="step on" id="s-welcome">
     <div class="entry">
-      <div class="entry-art">🎻</div>
-      <h1 class="entry-title">¿Qué necesita tu instrumento?</h1>
-      <p class="entry-sub">Cuéntanoslo en unos pasos.<br>Ana revisará tu solicitud y te confirmará disponibilidad.</p>
-      <button class="ebtn ebtn-primary" onclick="go('s-contact')">
-        Primera vez en el taller
-        <span class="ebtn-sub">Crear nuevo perfil</span>
-      </button>
-      <button class="ebtn ebtn-secondary" onclick="go('s-identify')">
-        Ya soy cliente
-        <span class="ebtn-sub">Accede con tu teléfono o email</span>
-      </button>
-      <div class="evo">
-        💡 Próximamente: área de cliente con historial de tus instrumentos y solicitudes en un clic.
+      <div class="entry-art">
+        <svg width="34" height="36" viewBox="0 0 34 36"><use href="#ico-violin"/></svg>
       </div>
-    </div>
-  </div>
-
-  <!-- ── IDENTIFY ────────────────────────────────── -->
-  <div class="step" id="s-identify">
-    <div class="eyebrow">Cliente anterior</div>
-    <h2>¿Cómo te identificamos?</h2>
-    <p class="lead">Introduce el teléfono o email con el que contactaste anteriormente.</p>
-    <div class="field">
-      <label for="ret-id">Teléfono o email</label>
-      <input type="text" id="ret-id" placeholder="612 345 678 · nombre@email.com" oninput="lookup(this.value)" autocomplete="off">
-    </div>
-    <div class="client-found" id="cf" style="display:none">
-      <div class="cf-name" id="cf-name"></div>
-      <div class="cf-sub"  id="cf-sub"></div>
-    </div>
-    <div class="notice n-red" id="cf-no">
-      No encontramos ese contacto.
-      <a href="#" onclick="go('s-contact');return false" style="color:inherit;font-weight:700;">Continuar como nuevo cliente →</a>
+      <h1 class="entry-title">¿Qué necesita tu instrumento?</h1>
+      <p class="entry-sub">Cuéntanoslo en unos pasos.<br>Ana revisará tu solicitud y te confirmará disponibilidad y precio.</p>
+      <button class="ebtn ebtn-primary" onclick="go('s-contact')">
+        Solicitar servicio
+        <span class="ebtn-sub">Primera visita y clientes habituales</span>
+      </button>
     </div>
   </div>
 
@@ -472,71 +613,224 @@
       <label for="f-email">Email <span class="opt-tag">(opcional)</span></label>
       <input type="email" id="f-email" placeholder="nombre@email.com" autocomplete="email">
     </div>
+    <div class="err-msg" id="err-contact"></div>
   </div>
 
-  <!-- ── INSTRUMENT ─────────────────────────────── -->
+  <!-- ── INSTRUMENT + ARCOS ─────────────────────── -->
   <div class="step" id="s-instrument">
     <div class="eyebrow">Paso 2 de 4</div>
-    <h2>Tu instrumento</h2>
-    <p class="lead">Nos ayuda a preparar el servicio adecuado.</p>
+    <h2>¿Qué traes al taller?</h2>
+    <p class="lead">Puedes traer un instrumento, arcos, o ambos.</p>
 
-    <p class="sec">Tipo de instrumento</p>
-    <div class="g2">
-      <div class="card" data-g="instr" data-v="violin"     onclick="pick(this)"><div class="c-icon">🎻</div><div class="c-name">Violín</div></div>
-      <div class="card" data-g="instr" data-v="viola"      onclick="pick(this)"><div class="c-icon">🎻</div><div class="c-name">Viola</div></div>
-      <div class="card" data-g="instr" data-v="chelo"      onclick="pick(this)"><div class="c-icon">🎸</div><div class="c-name">Violonchelo</div></div>
-      <div class="card" data-g="instr" data-v="contrabajo" onclick="pick(this)"><div class="c-icon">🎼</div><div class="c-name">Contrabajo</div></div>
+    <!-- ── Instrumento ── -->
+    <p class="sec">Instrumento</p>
+    <div class="g2" data-group="instr">
+      <div class="card instr-card" data-g="instr" data-v="violin"
+           onclick="pickInstr(this)" role="checkbox" aria-checked="false" tabindex="0"
+           onkeydown="if(event.key==='Enter'||event.key===' ')pickInstr(this)">
+        <div class="c-icon"><svg width="28" height="64" viewBox="0 0 28 64"><use href="#ico-violin"/></svg></div>
+        <div class="c-text"><div class="c-name">Violín</div></div>
+      </div>
+      <div class="card instr-card" data-g="instr" data-v="viola"
+           onclick="pickInstr(this)" role="checkbox" aria-checked="false" tabindex="0"
+           onkeydown="if(event.key==='Enter'||event.key===' ')pickInstr(this)">
+        <div class="c-icon"><svg width="28" height="64" viewBox="0 0 28 64"><use href="#ico-viola"/></svg></div>
+        <div class="c-text"><div class="c-name">Viola</div></div>
+      </div>
+      <div class="card instr-card" data-g="instr" data-v="chelo"
+           onclick="pickInstr(this)" role="checkbox" aria-checked="false" tabindex="0"
+           onkeydown="if(event.key==='Enter'||event.key===' ')pickInstr(this)">
+        <div class="c-icon"><svg width="24" height="64" viewBox="0 0 24 64"><use href="#ico-chelo"/></svg></div>
+        <div class="c-text"><div class="c-name">Violonchelo</div></div>
+      </div>
+      <div class="card instr-card" data-g="instr" data-v="contrabajo"
+           onclick="pickInstr(this)" role="checkbox" aria-checked="false" tabindex="0"
+           onkeydown="if(event.key==='Enter'||event.key===' ')pickInstr(this)">
+        <div class="c-icon"><svg width="28" height="64" viewBox="0 0 28 64"><use href="#ico-contrabajo"/></svg></div>
+        <div class="c-text"><div class="c-name">Contrabajo</div></div>
+      </div>
     </div>
 
-    <p class="sec">¿Cómo usas tu instrumento?</p>
-    <div class="g1">
-      <div class="card" data-g="seg" data-v="estudiante"  onclick="pick(this)"><div class="c-name">Estudiante</div><div class="c-desc">Conservatorio, escuela de música o aprendizaje</div></div>
-      <div class="card" data-g="seg" data-v="amateur"     onclick="pick(this)"><div class="c-name">Amateur activo</div><div class="c-desc">Música de cámara, bandas, aficionado con regularidad</div></div>
-      <div class="card" data-g="seg" data-v="profesional" onclick="pick(this)"><div class="c-name">Profesional</div><div class="c-desc">Conciertos, giras, grabaciones, docencia</div></div>
-      <div class="card" data-g="seg" data-v="orquesta"    onclick="pick(this)"><div class="c-name">Músico de orquesta</div><div class="c-desc">Plantilla o temporada orquestal</div></div>
+    <!-- Accordion dinámico: valor por instrumento seleccionado -->
+    <div class="accordion" id="acc-instrvals" aria-hidden="true">
+      <div id="instrval-list"><!-- populated by updateInstrValAccordion() --></div>
+    </div>
+    <!-- Anchor: seg-section se inserta aquí cuando hay instrumentos -->
+    <div id="seg-anchor-instr"></div>
+
+    <!-- Divider -->
+    <div class="sec-divider" style="margin-top:28px">
+      <div class="sec-divider-line"></div>
+      <span class="sec-divider-label">Arcos</span>
+      <div class="sec-divider-line"></div>
     </div>
 
-    <p class="sec">Valor aproximado <span class="opt-tag">(opcional)</span></p>
-    <p style="font-size:13px;color:var(--text-2);line-height:1.45;margin-bottom:10px;">Nos ayuda a valorar el nivel de responsabilidad técnica.</p>
-    <div class="g3">
-      <div class="vopt" data-g="valor" data-v="<2k"  onclick="pick(this)">Menos de<strong>2.000 €</strong></div>
-      <div class="vopt" data-g="valor" data-v="2-5k" onclick="pick(this)">Entre<strong>2.000–5.000 €</strong></div>
-      <div class="vopt" data-g="valor" data-v=">5k"  onclick="pick(this)">Más de<strong>5.000 €</strong></div>
+    <!-- Arco toggle -->
+    <div class="arco-toggle" id="arco-toggle-btn"
+         onclick="toggleArcos()" role="checkbox" aria-checked="false"
+         tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')toggleArcos()">
+      <div class="at-icon">
+        <svg width="9" height="48" viewBox="0 0 9 48"><use href="#ico-arco-v"/></svg>
+      </div>
+      <div class="at-info">
+        <div class="at-name">Añadir arcos</div>
+        <div class="at-desc">Encerdados, ajustes y reparaciones</div>
+      </div>
+      <div class="at-chip" id="at-chip">+</div>
     </div>
-    <div class="notice n-gold" id="n-hival">
-      💎 Los instrumentos de alto valor tienen un suplemento del 20% por responsabilidad técnica. Ana te lo confirmará antes de comenzar.
+
+    <!-- Accordion: valor del arco -->
+    <div class="accordion" id="acc-arcoval" aria-hidden="true">
+      <div class="acc-hd">Valor del arco <span class="opt-tag" style="text-transform:none;letter-spacing:0">(opcional)</span></div>
+      <p class="acc-help">Nos ayuda a calibrar el cuidado en la manipulación.</p>
+      <div class="g3" data-group="arcoVal">
+        <div class="vopt" data-g="arcoVal" data-v="<450"    onclick="pick(this)" role="radio" aria-checked="false" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')pick(this)">Hasta<strong>450 €</strong></div>
+        <div class="vopt" data-g="arcoVal" data-v="451-1500" onclick="pick(this)" role="radio" aria-checked="false" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')pick(this)">De<strong>451–1.500 €</strong></div>
+        <div class="vopt" data-g="arcoVal" data-v=">1500"   onclick="pick(this)" role="radio" aria-checked="false" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')pick(this)">Más de<strong>1.500 €</strong></div>
+      </div>
     </div>
+
+    <!-- Segment: se mueve aquí (arcos sin instrumento) o al anchor-instr (con instrumento) -->
+    <div id="seg-section" style="display:none">
+      <p class="sec" id="seg-label">¿Cómo los usas?</p>
+      <div class="g1" data-group="seg">
+        <div class="card" data-g="seg" data-v="estudiante"  onclick="pick(this)" role="radio" aria-checked="false" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')pick(this)"><div class="c-name">Estudiante</div><div class="c-desc">Conservatorio, escuela de música o aprendizaje</div></div>
+        <div class="card" data-g="seg" data-v="amateur"     onclick="pick(this)" role="radio" aria-checked="false" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')pick(this)"><div class="c-name">Amateur activo</div><div class="c-desc">Música de cámara, bandas, aficionado con regularidad</div></div>
+        <div class="card" data-g="seg" data-v="profesional" onclick="pick(this)" role="radio" aria-checked="false" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')pick(this)"><div class="c-name">Profesional</div><div class="c-desc">Conciertos, giras, grabaciones, docencia</div></div>
+        <div class="card" data-g="seg" data-v="orquesta"    onclick="pick(this)" role="radio" aria-checked="false" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')pick(this)"><div class="c-name">Músico de orquesta</div><div class="c-desc">Plantilla o temporada orquestal</div></div>
+      </div>
+    </div>
+
+    <div class="err-msg" id="err-instrument"></div>
   </div>
 
   <!-- ── SERVICE ────────────────────────────────── -->
   <div class="step" id="s-service">
     <div class="eyebrow">Paso 3 de 4</div>
-    <h2>¿Qué necesita tu instrumento?</h2>
-    <p class="lead">Selecciona el servicio que mejor describe lo que buscas.</p>
-    <div class="g1">
-      <div class="svc" data-g="svc" data-v="mant"    onclick="pick(this)"><div class="s-name">Ajuste de Mantenimiento</div><div class="s-desc">Revisión general, alma, puente, clavijas y limpieza. Para instrumentos en uso regular.</div><div class="s-price" id="p-mant">—</div></div>
-      <div class="svc" data-g="svc" data-v="opti"    onclick="pick(this)"><div class="s-name">Optimización del Instrumento</div><div class="s-desc">Ajuste fino acústico, equilibrio de respuesta entre cuerdas. Para quienes quieren sacar más del instrumento.</div><div class="s-price" id="p-opti">—</div></div>
-      <div class="svc" data-g="svc" data-v="prof"    onclick="pick(this)"><div class="s-name">Ajuste Profesional / de Escenario</div><div class="s-desc">Diagnóstico completo, optimización para repertorio específico y revisión posterior incluida.</div><div class="s-price" id="p-prof">—</div></div>
-      <div class="svc" data-g="svc" data-v="corr"    onclick="pick(this)"><div class="s-name">Corrección de Problemas</div><div class="s-desc">Cuando algo no funciona bien: puente, alma, vibraciones, clavijas. Diagnóstico incluido.</div><div class="s-price" id="p-corr">—</div></div>
-      <div class="svc" data-g="svc" data-v="estr"    onclick="pick(this)"><div class="s-name">Intervención Estructural</div><div class="s-desc">Grietas, encolados, refuerzos, mástil. Trabajo delicado con documentación del proceso.</div><div class="s-price" id="p-estr">—</div></div>
-      <div class="svc" data-g="svc" data-v="rest"    onclick="pick(this)"><div class="s-name">Restauración Integral</div><div class="s-desc">Para instrumentos históricos o de alto valor. Plan consensuado, seguimiento y documentación completa.</div><div class="s-price">Presupuesto personalizado</div></div>
-      <div class="svc" data-g="svc" data-v="diag"    onclick="pick(this)"><div class="s-name">No sé / Necesito diagnóstico</div><div class="s-desc">Cuéntanos qué notas y lo valoramos. El coste del diagnóstico se descuenta del servicio posterior.</div><div class="s-price">35 – 50 €</div></div>
+    <h2 id="svc-title">¿Qué necesita?</h2>
+    <p class="lead" id="svc-lead">Selecciona lo que mejor describe lo que buscas.</p>
+
+    <!-- INSTRUMENT SERVICES -->
+    <div id="instr-svc-section">
+      <p class="sec" id="instr-svc-label">Tipo de servicio</p>
+      <div class="g1" data-group="svc">
+        <div class="svc" data-g="svc" data-v="mant" onclick="toggleSvc(this)" role="checkbox" aria-checked="false" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')toggleSvc(this)">
+          <div class="s-name">Ajuste de Mantenimiento</div>
+          <div class="s-desc">Revisión general, alma, puente, clavijas y limpieza. Para instrumentos en uso regular.</div>
+          <div class="s-price" id="p-mant">—</div>
+        </div>
+        <div class="svc" data-g="svc" data-v="opti" onclick="toggleSvc(this)" role="checkbox" aria-checked="false" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')toggleSvc(this)">
+          <div class="s-name">Optimización del Instrumento</div>
+          <div class="s-desc">Ajuste fino acústico, equilibrio de respuesta entre cuerdas. Para quienes quieren sacar más del instrumento.</div>
+          <div class="s-price" id="p-opti">—</div>
+        </div>
+        <div class="svc" data-g="svc" data-v="prof" onclick="toggleSvc(this)" role="checkbox" aria-checked="false" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')toggleSvc(this)">
+          <div class="s-name">Ajuste Profesional / de Escenario</div>
+          <div class="s-desc">Diagnóstico completo, optimización para repertorio específico y revisión posterior incluida.</div>
+          <div class="s-price" id="p-prof">—</div>
+        </div>
+        <div class="svc" data-g="svc" data-v="corr" onclick="toggleSvc(this)" role="checkbox" aria-checked="false" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')toggleSvc(this)">
+          <div class="s-name">Corrección de Problemas</div>
+          <div class="s-desc">Cuando algo no funciona bien: puente, alma, vibraciones, clavijas. Diagnóstico incluido.</div>
+          <div class="s-price" id="p-corr">—</div>
+        </div>
+        <div class="svc" data-g="svc" data-v="estr" onclick="toggleSvc(this)" role="checkbox" aria-checked="false" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')toggleSvc(this)">
+          <div class="s-name">Intervención Estructural</div>
+          <div class="s-desc">Grietas, encolados, refuerzos, mástil. Trabajo delicado con documentación del proceso.</div>
+          <div class="s-price" id="p-estr">—</div>
+        </div>
+        <div class="svc" data-g="svc" data-v="rest" onclick="toggleSvc(this)" role="checkbox" aria-checked="false" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')toggleSvc(this)">
+          <div class="s-name">Restauración Integral</div>
+          <div class="s-desc">Para instrumentos históricos o de alto valor. Plan consensuado, seguimiento y documentación completa.</div>
+          <div class="s-price">Presupuesto personalizado</div>
+        </div>
+        <div class="svc" data-g="svc" data-v="diag" onclick="toggleSvc(this)" role="checkbox" aria-checked="false" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')toggleSvc(this)">
+          <div class="s-name">No sé / Necesito diagnóstico</div>
+          <div class="s-desc">Cuéntanos qué notas y lo valoramos. El coste del diagnóstico se descuenta del servicio posterior.</div>
+          <div class="s-price">Desde 35 €</div>
+        </div>
+      </div>
     </div>
+
+    <!-- DIVIDER (visible when both instrument and arcos) -->
+    <div class="hr" id="svc-divider" style="display:none"></div>
+
+    <!-- ARCO SERVICES -->
+    <div id="arco-svc-section" style="display:none">
+      <p class="sec">Servicios de arco</p>
+      <p style="font-size:13px;color:var(--text-2);line-height:1.45;margin-bottom:12px">Selecciona los servicios. Ajusta la cantidad si traes más de un arco.</p>
+      <div class="arco-svc-list">
+
+        <div class="asvc" id="asvc-encerdado" onclick="toggleArcoSvc('encerdado',event)">
+          <div class="asvc-info">
+            <div class="asvc-name">Encerdado</div>
+            <div class="asvc-price" id="ap-encerdado">Desde 75 €</div>
+          </div>
+          <div class="qty-ctrl" id="qc-encerdado">
+            <button class="qty-btn" onclick="adjQty('encerdado',-1,event)">−</button>
+            <span class="qty-num" id="qn-encerdado">1</span>
+            <button class="qty-btn" onclick="adjQty('encerdado',+1,event)">+</button>
+          </div>
+        </div>
+
+        <div class="asvc" id="asvc-empunadura" onclick="toggleArcoSvc('empunadura',event)">
+          <div class="asvc-info">
+            <div class="asvc-name">Cambio de Empuñadura</div>
+            <div class="asvc-price" id="ap-empunadura">Desde 40 €</div>
+          </div>
+          <div class="qty-ctrl" id="qc-empunadura">
+            <button class="qty-btn" onclick="adjQty('empunadura',-1,event)">−</button>
+            <span class="qty-num" id="qn-empunadura">1</span>
+            <button class="qty-btn" onclick="adjQty('empunadura',+1,event)">+</button>
+          </div>
+        </div>
+
+        <div class="asvc" id="asvc-punta" onclick="toggleArcoSvc('punta',event)">
+          <div class="asvc-info">
+            <div class="asvc-name">Arreglo de Punta</div>
+            <div class="asvc-price" id="ap-punta">Desde 35 €</div>
+          </div>
+          <div class="qty-ctrl" id="qc-punta">
+            <button class="qty-btn" onclick="adjQty('punta',-1,event)">−</button>
+            <span class="qty-num" id="qn-punta">1</span>
+            <button class="qty-btn" onclick="adjQty('punta',+1,event)">+</button>
+          </div>
+        </div>
+
+        <div class="asvc" id="asvc-tornillo" onclick="toggleArcoSvc('tornillo',event)">
+          <div class="asvc-info">
+            <div class="asvc-name">Ajuste de Tornillo</div>
+            <div class="asvc-price" id="ap-tornillo">Desde 25 €</div>
+          </div>
+          <div class="qty-ctrl" id="qc-tornillo">
+            <button class="qty-btn" onclick="adjQty('tornillo',-1,event)">−</button>
+            <span class="qty-num" id="qn-tornillo">1</span>
+            <button class="qty-btn" onclick="adjQty('tornillo',+1,event)">+</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
     <div class="hr"></div>
+
     <div class="field">
       <label for="f-obs">Observaciones <span class="opt-tag">(opcional)</span></label>
       <textarea id="f-obs" placeholder="¿Qué notas? ¿Qué quieres conseguir? Cuantos más detalles, mejor."></textarea>
     </div>
+
     <div class="field">
       <label>Adjunta fotos, vídeo o audio <span class="opt-tag">(opcional)</span></label>
-      <div class="upload" onclick="document.getElementById('file-input').click()">
+      <div class="upload" id="upload-zone" onclick="if(uploadedFiles.length<3)document.getElementById('file-input').click()">
         <div class="upload-icon">📎</div>
         <div class="upload-text">Toca para adjuntar archivos</div>
-        <div class="upload-sub">Fotos · Vídeo del problema · Nota de audio · Máx. 3 archivos, 20 MB</div>
+        <div class="upload-sub" id="upload-sub">Fotos · Vídeo del problema · Nota de audio · Máx. 3 archivos</div>
       </div>
-      <input type="file" id="file-input" multiple accept="image/*,video/*,audio/*" onchange="onFiles(this)">
+      <input type="file" id="file-input" accept="image/*,video/*,audio/*" onchange="onFiles(this)">
       <div id="file-names"></div>
     </div>
+
+    <div class="err-msg" id="err-service"></div>
   </div>
 
   <!-- ── LOGISTICS ──────────────────────────────── -->
@@ -546,22 +840,40 @@
     <p class="lead">Ya casi terminamos. Dinos cuándo y cómo.</p>
 
     <p class="sec">Urgencia</p>
-    <div class="g1" id="urg-group">
-      <div class="card" data-g="urg" data-v="normal" onclick="pick(this);urgNotice()"><div class="c-name">Sin urgencia</div><div class="c-desc">Se atiende según disponibilidad del taller</div></div>
-      <div class="card" data-g="urg" data-v="semana" onclick="pick(this);urgNotice()"><div class="c-name">Esta semana <span class="bdg bdg-red">+25%</span></div><div class="c-desc">Atención prioritaria en los próximos 4–5 días</div></div>
-      <div class="card" data-g="urg" data-v="hoy"    onclick="pick(this);urgNotice()"><div class="c-name">Hoy o mañana <span class="bdg bdg-red">+40%</span></div><div class="c-desc">Máxima prioridad. Sujeto a disponibilidad de Ana.</div></div>
+    <div class="g1" data-group="urg">
+      <div class="card" data-g="urg" data-v="normal" onclick="pick(this);urgNotice()" role="radio" aria-checked="false" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){pick(this);urgNotice()}">
+        <div class="c-name">Sin urgencia</div>
+        <div class="c-desc">Se atiende según disponibilidad del taller</div>
+      </div>
+      <div class="card" data-g="urg" data-v="semana" onclick="pick(this);urgNotice()" role="radio" aria-checked="false" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){pick(this);urgNotice()}">
+        <div class="c-name">Esta semana <span class="bdg bdg-amber">+25%</span></div>
+        <div class="c-desc">Atención prioritaria en los próximos 4–5 días</div>
+      </div>
+      <div class="card" data-g="urg" data-v="hoy" onclick="pick(this);urgNotice()" role="radio" aria-checked="false" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){pick(this);urgNotice()}">
+        <div class="c-name">Hoy o mañana <span class="bdg bdg-amber">+40%</span></div>
+        <div class="c-desc">Máxima prioridad. Sujeto a disponibilidad de Ana.</div>
+      </div>
     </div>
-    <div class="notice n-red" id="n-urg">
-      ⚡ El suplemento de urgencia se aplica sobre el precio base del trabajo. Ana te lo confirmará antes de comenzar.
+    <div class="notice n-amber" id="n-urg">
+      ⚡ El suplemento por urgencia se aplica sobre el precio base. Ana te lo confirmará antes de comenzar.
     </div>
 
     <div class="hr"></div>
 
     <p class="sec">¿Cómo nos entregas el instrumento?</p>
-    <div class="g1" id="dlv-group">
-      <div class="card" data-g="dlv" data-v="taller"        onclick="pick(this);dlvChange()"><div class="c-name">Lo llevo al taller</div><div class="c-desc">Sin coste adicional de logística</div></div>
-      <div class="card" data-g="dlv" data-v="conservatorio" onclick="pick(this);dlvChange()"><div class="c-name">Recogida en conservatorio <span class="bdg bdg-blue">+20 €</span></div><div class="c-desc">Acudimos en horario acordado</div></div>
-      <div class="card" data-g="dlv" data-v="domicilio"     onclick="pick(this);dlvChange()"><div class="c-name">Recogida a domicilio <span class="bdg bdg-blue">+35–50 €</span></div><div class="c-desc">Según zona. Ana te confirmará el coste exacto.</div></div>
+    <div class="g1" data-group="dlv">
+      <div class="card" data-g="dlv" data-v="taller"        onclick="pick(this);dlvChange()" role="radio" aria-checked="false" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){pick(this);dlvChange()}">
+        <div class="c-name">Lo llevo al taller</div>
+        <div class="c-desc">Sin coste adicional de logística</div>
+      </div>
+      <div class="card" data-g="dlv" data-v="conservatorio" onclick="pick(this);dlvChange()" role="radio" aria-checked="false" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){pick(this);dlvChange()}">
+        <div class="c-name">Recogida en conservatorio <span class="bdg bdg-blue">+20 €</span></div>
+        <div class="c-desc">Acudimos en horario acordado</div>
+      </div>
+      <div class="card" data-g="dlv" data-v="domicilio"     onclick="pick(this);dlvChange()" role="radio" aria-checked="false" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){pick(this);dlvChange()}">
+        <div class="c-name">Recogida a domicilio <span class="bdg bdg-blue">desde +35 €</span></div>
+        <div class="c-desc">Según zona. Ana te confirmará el coste exacto.</div>
+      </div>
     </div>
     <div class="field" id="f-addr" style="display:none;margin-top:14px;">
       <label for="f-dir">Dirección de recogida</label>
@@ -596,16 +908,20 @@
         <div class="sum-row"><span class="sum-k">Teléfono</span><span class="sum-v" id="ss-tel">—</span></div>
         <div class="sum-row" id="ss-email-r"><span class="sum-k">Email</span><span class="sum-v" id="ss-email">—</span></div>
       </div>
-      <div class="sum-sec">
+      <div class="sum-sec" id="ss-instr-sec">
         <div class="sum-sec-title">Instrumento</div>
-        <div class="sum-row"><span class="sum-k">Tipo</span><span class="sum-v" id="ss-instr">—</span></div>
+        <div id="ss-instr-rows"><!-- filled by buildSummary() --></div>
         <div class="sum-row"><span class="sum-k">Perfil</span><span class="sum-v" id="ss-seg">—</span></div>
-        <div class="sum-row"><span class="sum-k">Valor</span><span class="sum-v" id="ss-val">—</span></div>
+        <div class="sum-row"><span class="sum-k">Servicio</span><span class="sum-v" id="ss-svc">—</span></div>
       </div>
-      <div class="sum-sec">
-        <div class="sum-sec-title">Servicio</div>
-        <div class="sum-row"><span class="sum-k">Tipo</span><span class="sum-v" id="ss-svc">—</span></div>
-        <div class="sum-row" id="ss-obs-r"><span class="sum-k">Notas</span><span class="sum-v" id="ss-obs" style="max-width:58%;text-align:right">—</span></div>
+      <div class="sum-sec" id="ss-arco-sec" style="display:none">
+        <div class="sum-sec-title">Arcos</div>
+        <div class="sum-row" id="ss-arco-val-r"><span class="sum-k">Valor</span><span class="sum-v" id="ss-arcoval">—</span></div>
+        <div id="ss-arco-svcs"></div>
+      </div>
+      <div class="sum-sec" id="ss-obs-sec" style="display:none">
+        <div class="sum-sec-title">Notas</div>
+        <div class="sum-v" id="ss-obs" style="font-size:13px;line-height:1.5;text-align:left">—</div>
       </div>
       <div class="sum-sec">
         <div class="sum-sec-title">Logística</div>
@@ -614,6 +930,16 @@
         <div class="sum-row"><span class="sum-k">Fecha</span><span class="sum-v" id="ss-fecha">—</span></div>
       </div>
     </div>
+
+    <!-- RGPD -->
+    <div class="rgpd-wrap">
+      <label class="rgpd-label">
+        <input type="checkbox" id="rgpd-chk">
+        <span>He leído y acepto la <a href="https://anafarina.com/politica-privacidad" target="_blank" rel="noopener noreferrer">política de privacidad</a>. Consiento que mis datos sean utilizados para gestionar esta solicitud de servicio.</span>
+      </label>
+    </div>
+
+    <div class="err-msg" id="err-summary"></div>
   </div>
 
   <!-- ── DONE ───────────────────────────────────── -->
@@ -626,16 +952,13 @@
         📱 Te escribiremos al <strong id="done-tel"></strong>.<br>
         Normalmente en menos de 24 horas en días laborables.
       </div>
-      <div class="evo">
-        💡 Próximamente podrás crear una cuenta para consultar el historial de tus instrumentos y solicitar nuevos servicios con un solo clic.
-      </div>
     </div>
   </div>
 
 </div><!-- /canvas -->
 
 <!-- FOOTER NAV -->
-<nav class="fnav" id="fnav">
+<nav class="fnav" id="fnav" aria-label="Navegación del formulario">
   <div class="fnav-inner">
     <button class="btn btn-back" id="btn-back" onclick="back()">← Atrás</button>
     <button class="btn btn-next" id="btn-next" onclick="next()">Continuar →</button>
@@ -643,46 +966,62 @@
 </nav>
 
 <script>
+// ═══ CONFIG ══════════════════════════════════════════════════════
+// Forminit (ex-Getform) — cuenta de Ana Fariña <anafarinac@gmail.com>
+const FORM_ENDPOINT = 'https://api.forminit.com/form/x11a31we6jn';
+
 // ═══ DATA ════════════════════════════════════════════════════════
 
+// Instrument service prices
 const P = {
-  violin:     {mant:80, opti:180, prof:310, corr:110, estr:240},
-  viola:      {mant:90, opti:200, prof:340, corr:130, estr:270},
-  chelo:      {mant:135,opti:270, prof:470, corr:210, estr:430},
-  contrabajo: {mant:180,opti:360, prof:620, corr:280, estr:580},
+  violin:     {mant:80,  opti:180, prof:310, corr:110, estr:240},
+  viola:      {mant:90,  opti:200, prof:340, corr:130, estr:270},
+  chelo:      {mant:135, opti:270, prof:470, corr:210, estr:430},
+  contrabajo: {mant:180, opti:360, prof:620, corr:280, estr:580},
 };
 
-const INAME = {violin:'Violín', viola:'Viola', chelo:'Violonchelo', contrabajo:'Contrabajo'};
-const SNAME = {estudiante:'Estudiante', amateur:'Amateur activo', profesional:'Profesional', orquesta:'Músico de orquesta'};
-const VNAME = {'<2k':'Menos de 2.000 €', '2-5k':'2.000 – 5.000 €', '>5k':'Más de 5.000 €'};
+// Arco service definitions
+const ARCO_SVCS = {
+  encerdado:  {name:'Encerdado',           prices:{violin:75, viola:75, chelo:95, contrabajo:120, default:75}},
+  empunadura: {name:'Cambio de Empuñadura', prices:{default:40}},
+  punta:      {name:'Arreglo de Punta',    prices:{default:35}},
+  tornillo:   {name:'Ajuste de Tornillo',  prices:{default:25}},
+};
+
+const INAME  = {violin:'Violín', viola:'Viola', chelo:'Violonchelo', contrabajo:'Contrabajo'};
+const SNAME  = {estudiante:'Estudiante', amateur:'Amateur activo', profesional:'Profesional', orquesta:'Músico de orquesta'};
+const VNAME  = {'<2k':'Menos de 2.000 €', '2-5k':'2.000 – 5.000 €', '>5k':'Más de 5.000 €'};
+const AVNAME = {'<450':'Hasta 450 €', '451-1500':'451 – 1.500 €', '>1500':'Más de 1.500 €'};
 const SVNAME = {mant:'Ajuste de Mantenimiento', opti:'Optimización del Instrumento', prof:'Ajuste Profesional / de Escenario', corr:'Corrección de Problemas', estr:'Intervención Estructural', rest:'Restauración Integral', diag:'Diagnóstico'};
-const UNAME = {normal:'Sin urgencia', semana:'Esta semana (+25%)', hoy:'Hoy o mañana (+40%)'};
-const DNAME = {taller:'Lo llevo al taller', conservatorio:'Recogida en conservatorio', domicilio:'Recogida a domicilio'};
-
-const MOCKS = {
-  '612345678':       {name:'Elena Montoya', sub:'Violín 4/4 · Viola'},
-  'elena@email.com': {name:'Elena Montoya', sub:'Violín 4/4 · Viola'},
-  '655000111':       {name:'Javier Ramos',  sub:'Violonchelo 3/4'},
-};
+const UNAME  = {normal:'Sin urgencia', semana:'Esta semana (+25%)', hoy:'Hoy o mañana (+40%)'};
+const DNAME  = {taller:'Lo llevo al taller', conservatorio:'Recogida en conservatorio', domicilio:'Recogida a domicilio'};
 
 // ═══ STATE ═══════════════════════════════════════════════════════
 
-const ST = {instr:null, seg:null, valor:null, svc:null, urg:null, dlv:null, returning:false};
+const ST = {
+  instrs:   {},      // {violin:{val:null}, chelo:{val:'>5k'}, ...}
+  seg:      null,    // estudiante | amateur | profesional | orquesta
+  svcs:     new Set(), // Set de ids: mant | opti | prof | corr | estr | rest | diag
+  arcos:    false,   // bool
+  arcoVal:  null,    // <450 | 451-1500 | >1500
+  arcoSvcs: {},      // {encerdado:2, empunadura:1, ...}
+  urg:      'normal',
+  dlv:      'taller',
+};
 
 // ═══ NAVIGATION ══════════════════════════════════════════════════
 
 const PROGRESS = {
-  's-welcome':0, 's-identify':10, 's-contact':20,
+  's-welcome':0, 's-contact':20,
   's-instrument':40, 's-service':60, 's-logistics':80,
   's-summary':95, 's-done':100
 };
-
 const CHIPS = {
-  's-welcome':'', 's-identify':'Cliente anterior',
-  's-contact':'1 · Contacto', 's-instrument':'2 · Instrumento',
-  's-service':'3 · Servicio', 's-logistics':'4 · Logística',
-  's-summary':'Resumen', 's-done':'✓ Enviado'
+  's-welcome':'', 's-contact':'1 · Contacto',
+  's-instrument':'2 · Instrumento', 's-service':'3 · Servicio',
+  's-logistics':'4 · Logística', 's-summary':'Resumen', 's-done':'✓ Enviado'
 };
+const FLOW = ['s-contact','s-instrument','s-service','s-logistics','s-summary'];
 
 let hist = [];
 let cur  = 's-welcome';
@@ -701,21 +1040,10 @@ function back() {
 }
 
 function next() {
+  if (!validate()) return;
   if (cur === 's-summary') { submit(); return; }
-
-  const newFlow = ['s-contact','s-instrument','s-service','s-logistics','s-summary'];
-  const retFlow = ['s-identify','s-service','s-logistics','s-summary'];
-
-  // Special: from identify, if client found jump to service
-  if (cur === 's-identify') {
-    const found = document.getElementById('cf').style.display !== 'none';
-    go(found ? 's-service' : 's-contact');
-    return;
-  }
-
-  const flow = ST.returning ? retFlow : newFlow;
-  const i = flow.indexOf(cur);
-  if (i >= 0 && i < flow.length - 1) go(flow[i + 1]);
+  const i = FLOW.indexOf(cur);
+  if (i >= 0 && i < FLOW.length - 1) go(FLOW[i + 1]);
 }
 
 function render() {
@@ -728,8 +1056,8 @@ function render() {
   chip.textContent = CHIPS[cur] || '';
   chip.style.display = CHIPS[cur] ? 'inline-block' : 'none';
 
-  // Footer
-  const fnav = document.getElementById('fnav');
+  // Footer nav
+  const fnav  = document.getElementById('fnav');
   const bback = document.getElementById('btn-back');
   const bnext = document.getElementById('btn-next');
 
@@ -739,28 +1067,310 @@ function render() {
     fnav.classList.add('on');
     bback.style.display = hist.length ? 'block' : 'none';
     bnext.textContent = cur === 's-summary' ? 'Enviar solicitud' : 'Continuar →';
+    bnext.disabled = false;
   }
 
-  if (cur === 's-service')  refreshPrices();
+  // Step-specific hooks
+  // Announce step for screen readers
+  document.getElementById('step-announcer').textContent = CHIPS[cur] || 'Inicio';
+
+  if (cur === 's-service')  renderServiceStep();
+  if (cur === 's-logistics') applyLogisticsDefaults();
   if (cur === 's-summary')  buildSummary();
   window.scrollTo(0, 0);
 }
 
-// ═══ SELECTIONS ══════════════════════════════════════════════════
+// ═══ VALIDATION ══════════════════════════════════════════════════
+
+let errTimer;
+function showErr(errId, msg) {
+  const box = document.getElementById(errId);
+  if (!box) return;
+  box.textContent = '⚠ ' + msg;
+  box.classList.add('on');
+  clearTimeout(errTimer);
+  errTimer = setTimeout(() => box.classList.remove('on'), 5000);
+}
+
+function validate() {
+  if (cur === 's-contact') {
+    const n = document.getElementById('f-nombre').value.trim();
+    const t = document.getElementById('f-tel').value.trim();
+    if (!n) { showErr('err-contact','Introduce tu nombre completo.'); return false; }
+    if (!t) { showErr('err-contact','Introduce tu número de teléfono.'); return false; }
+  }
+  if (cur === 's-instrument') {
+    if (Object.keys(ST.instrs).length === 0 && !ST.arcos) {
+      showErr('err-instrument','Selecciona al menos un instrumento o añade arcos.'); return false;
+    }
+  }
+  if (cur === 's-service') {
+    if (Object.keys(ST.instrs).length > 0 && ST.svcs.size === 0) {
+      showErr('err-service','Selecciona al menos un tipo de servicio.'); return false;
+    }
+    if (ST.arcos && !Object.values(ST.arcoSvcs).some(q => q > 0)) {
+      showErr('err-service','Selecciona al menos un servicio de arco.'); return false;
+    }
+  }
+  return true;
+}
+
+// ═══ INSTRUMENT STEP ═════════════════════════════════════════════
+
+function pickInstr(el) {
+  const v = el.dataset.v;
+  const isOn = el.classList.contains('on');
+
+  if (isOn) {
+    // Deselect: quitar instrumento
+    el.classList.remove('on'); el.setAttribute('aria-checked','false');
+    delete ST.instrs[v];
+  } else {
+    // Seleccionar: añadir instrumento (preserva otros seleccionados)
+    el.classList.add('on'); el.setAttribute('aria-checked','true');
+    if (!ST.instrs[v]) ST.instrs[v] = { val: null };
+  }
+
+  ST.svcs = new Set();
+  document.querySelectorAll('[data-g="svc"]').forEach(e => {
+    e.classList.remove('on'); e.setAttribute('aria-checked','false');
+  });
+
+  updateInstrValAccordion();
+  updateSegSection();
+}
+
+function pickInstrVal(instr, v) {
+  if (!ST.instrs[instr]) return;
+  // Toggle: si ya está seleccionado, deseleccionar
+  ST.instrs[instr].val = ST.instrs[instr].val === v ? null : v;
+  updateInstrValAccordion();
+}
+
+function updateInstrValAccordion() {
+  const acc  = document.getElementById('acc-instrvals');
+  const list = document.getElementById('instrval-list');
+  const selected = Object.keys(ST.instrs);
+
+  if (selected.length === 0) {
+    acc.classList.remove('on'); acc.setAttribute('aria-hidden','true');
+    list.innerHTML = '';
+    return;
+  }
+  acc.classList.add('on'); acc.setAttribute('aria-hidden','false');
+
+  const vOpts = [
+    { v:'<2k',  label:'Hasta',  strong:'2.000 €' },
+    { v:'2-5k', label:'De',     strong:'2–5.000 €' },
+    { v:'>5k',  label:'Más de', strong:'5.000 €' },
+  ];
+
+  list.innerHTML = selected.map(instr => {
+    const cur = ST.instrs[instr].val;
+    const opts = vOpts.map(o => `
+      <div class="vopt${cur === o.v ? ' on' : ''}"
+           onclick="pickInstrVal('${instr}','${o.v}')"
+           role="radio" aria-checked="${cur === o.v ? 'true' : 'false'}" tabindex="0"
+           onkeydown="if(event.key==='Enter'||event.key===' ')pickInstrVal('${instr}','${o.v}')">
+        ${o.label}<strong>${o.strong}</strong>
+      </div>`).join('');
+    const hiVal = cur === '>5k'
+      ? `<div class="notice n-gold" style="margin-top:8px">💎 Alto valor: suplemento del 20% por responsabilidad técnica.</div>`
+      : '';
+    return `
+      <div style="margin-bottom:14px">
+        <div class="acc-hd" style="font-size:13px;margin-bottom:8px">
+          Valor de tu ${INAME[instr]?.toLowerCase() || instr}
+          <span class="opt-tag" style="text-transform:none;letter-spacing:0">(opcional)</span>
+        </div>
+        <div class="g3">${opts}</div>
+        ${hiVal}
+      </div>`;
+  }).join('');
+}
+
+function updateSegSection() {
+  const hasInstr = Object.keys(ST.instrs).length > 0;
+  const hasArcos = ST.arcos;
+  const show = hasInstr || hasArcos;
+  const seg = document.getElementById('seg-section');
+  seg.style.display = show ? 'block' : 'none';
+  if (show) {
+    const lbl = !hasInstr ? '¿Cómo usas tus arcos?'
+      : hasArcos ? '¿Cómo los usas?'
+      : '¿Cómo usas tu instrumento?';
+    document.getElementById('seg-label').textContent = lbl;
+    // Reposicionar: con instrumento → justo después del accordion de valores;
+    //               solo arcos → después del accordion de valor de arco
+    if (hasInstr) {
+      const anchor = document.getElementById('seg-anchor-instr');
+      anchor.parentNode.insertBefore(seg, anchor.nextSibling);
+    } else {
+      const anchor = document.getElementById('acc-arcoval');
+      anchor.parentNode.insertBefore(seg, anchor.nextSibling);
+    }
+  }
+}
+
+function toggleArcos() {
+  ST.arcos = !ST.arcos;
+  ST.arcoSvcs = {};
+  ST.arcoVal = null;
+
+  const btn  = document.getElementById('arco-toggle-btn');
+  const acc  = document.getElementById('acc-arcoval');
+  const chip = document.getElementById('at-chip');
+
+  btn.classList.toggle('on', ST.arcos);
+  btn.setAttribute('aria-checked', ST.arcos ? 'true' : 'false');
+  acc.classList.toggle('on', ST.arcos);
+  acc.setAttribute('aria-hidden', ST.arcos ? 'false' : 'true');
+  chip.textContent = ST.arcos ? '✓' : '+';
+
+  if (ST.arcos) {
+    document.querySelectorAll('[data-g="arcoVal"]').forEach(e => {
+      e.classList.remove('on'); e.setAttribute('aria-checked','false');
+    });
+  }
+
+  updateSegSection();
+}
+
+// ═══ GENERIC PICKER ══════════════════════════════════════════════
 
 function pick(el) {
   const g = el.dataset.g, v = el.dataset.v;
-  el.closest('.g1, .g2, .g3, #urg-group, #dlv-group')
-    ?.querySelectorAll(`[data-g="${g}"]`)
-    .forEach(c => c.classList.remove('on'));
-  el.classList.add('on');
 
-  if (g === 'instr') { ST.instr  = v; refreshPrices(); }
-  if (g === 'seg')     ST.seg   = v;
-  if (g === 'valor') { ST.valor  = v; document.getElementById('n-hival').classList.toggle('on', v === '>5k'); }
-  if (g === 'svc')     ST.svc   = v;
-  if (g === 'urg')     ST.urg   = v;
-  if (g === 'dlv')     ST.dlv   = v;
+  // Deselect all in same group
+  const container = el.closest('[data-group]') || el.parentElement;
+  container.querySelectorAll(`[data-g="${g}"]`).forEach(c => {
+    c.classList.remove('on'); c.setAttribute('aria-checked','false');
+  });
+  el.classList.add('on'); el.setAttribute('aria-checked','true');
+
+  // State update
+  if (g === 'seg')      ST.seg = v;
+  if (g === 'arcoVal')  ST.arcoVal = v;
+  if (g === 'urg')      { ST.urg = v; urgNotice(); }
+  if (g === 'dlv')      { ST.dlv = v; dlvChange(); }
+}
+
+// ═══ INSTRUMENT SERVICES (multi-select) ══════════════════════════
+
+function toggleSvc(el) {
+  const v = el.dataset.v;
+  if (ST.svcs.has(v)) {
+    ST.svcs.delete(v);
+    el.classList.remove('on'); el.setAttribute('aria-checked','false');
+  } else {
+    ST.svcs.add(v);
+    el.classList.add('on'); el.setAttribute('aria-checked','true');
+  }
+}
+
+// ═══ ARCO SERVICES ═══════════════════════════════════════════════
+
+function toggleArcoSvc(id, ev) {
+  ev.stopPropagation();
+  const card = document.getElementById(`asvc-${id}`);
+  const isOn = card.classList.contains('on');
+  if (isOn) {
+    delete ST.arcoSvcs[id];
+    card.classList.remove('on');
+    document.getElementById(`qn-${id}`).textContent = '1';
+  } else {
+    ST.arcoSvcs[id] = 1;
+    card.classList.add('on');
+  }
+}
+
+function adjQty(id, delta, ev) {
+  ev.stopPropagation();
+  if (!ST.arcoSvcs[id]) return;
+  ST.arcoSvcs[id] = Math.max(1, ST.arcoSvcs[id] + delta);
+  document.getElementById(`qn-${id}`).textContent = ST.arcoSvcs[id];
+}
+
+// ═══ SERVICE STEP ════════════════════════════════════════════════
+
+// Instrumento "principal" para precios (chelo/contrabajo > violín/viola)
+function primaryInstr() {
+  const list = Object.keys(ST.instrs);
+  return list.find(i => i === 'chelo' || i === 'contrabajo') || list[0] || null;
+}
+
+function renderServiceStep() {
+  const instrKeys = Object.keys(ST.instrs);
+  const hasInstr  = instrKeys.length > 0;
+  const hasArcos  = ST.arcos;
+
+  // Title
+  const title = (hasInstr && hasArcos) ? '¿Qué necesitas?' :
+    hasInstr
+      ? (instrKeys.length > 1
+          ? `¿Qué necesitan tus instrumentos?`
+          : `¿Qué necesita tu ${INAME[instrKeys[0]]?.toLowerCase() || 'instrumento'}?`)
+      : '¿Qué necesitan tus arcos?';
+  document.getElementById('svc-title').textContent = title;
+
+  // Section visibility
+  document.getElementById('instr-svc-section').style.display = hasInstr ? 'block' : 'none';
+  document.getElementById('arco-svc-section').style.display  = hasArcos ? 'block' : 'none';
+  document.getElementById('svc-divider').style.display = (hasInstr && hasArcos) ? 'block' : 'none';
+
+  if (hasInstr) {
+    document.getElementById('instr-svc-label').textContent =
+      hasArcos || instrKeys.length > 1 ? 'Tipo de servicio para los instrumentos' : 'Tipo de servicio';
+    refreshPrices();
+  }
+
+  if (hasArcos) renderArcoSvcPrices();
+}
+
+function refreshPrices() {
+  const instr = primaryInstr();
+  if (!instr) return;
+  const p = P[instr];
+  if (!p) return;
+  const sp = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = `Desde ${v} €`; };
+  sp('p-mant', p.mant);
+  sp('p-opti', p.opti);
+  sp('p-prof', p.prof);
+  sp('p-corr', p.corr);
+  sp('p-estr', p.estr);
+}
+
+function renderArcoSvcPrices() {
+  const instr = primaryInstr();
+  Object.keys(ARCO_SVCS).forEach(id => {
+    const el = document.getElementById(`ap-${id}`);
+    if (!el) return;
+    const prices = ARCO_SVCS[id].prices;
+    const p = (instr && prices[instr]) ? prices[instr] : prices.default;
+    const prefix = (id === 'encerdado' && instr) ? '' : 'Desde ';
+    el.textContent = `${prefix}${p} €`;
+  });
+}
+
+// ═══ LOGISTICS ═══════════════════════════════════════════════════
+
+function applyLogisticsDefaults() {
+  // Apply default selections visually
+  ['urg','dlv'].forEach(g => {
+    const defaultV = g === 'urg' ? ST.urg : ST.dlv;
+    document.querySelectorAll(`[data-g="${g}"]`).forEach(c => {
+      const isDefault = c.dataset.v === defaultV;
+      c.classList.toggle('on', isDefault);
+      c.setAttribute('aria-checked', isDefault ? 'true' : 'false');
+    });
+  });
+
+  // Set date min to today
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('f-fecha').min = today;
+
+  dlvChange();
+  urgNotice();
 }
 
 function urgNotice() {
@@ -772,55 +1382,65 @@ function dlvChange() {
     (ST.dlv === 'conservatorio' || ST.dlv === 'domicilio') ? 'block' : 'none';
 }
 
-// ═══ RETURNING CLIENT ════════════════════════════════════════════
-
-let lookT;
-function lookup(v) {
-  clearTimeout(lookT);
-  lookT = setTimeout(() => {
-    const k = v.trim().toLowerCase().replace(/\s/g,'');
-    const c = MOCKS[k] || MOCKS[v.trim()];
-    document.getElementById('cf').style.display   = c ? 'block' : 'none';
-    document.getElementById('cf-no').classList.toggle('on', !c && k.length > 5);
-    if (c) {
-      document.getElementById('cf-name').textContent = c.name;
-      document.getElementById('cf-sub').textContent  = c.sub;
-      ST.returning = true;
-    }
-  }, 350);
-}
-
-// ═══ PRICES ══════════════════════════════════════════════════════
-
-function refreshPrices() {
-  if (!ST.instr) return;
-  const p = P[ST.instr];
-  const set = (id, v, pre='') => { const e=document.getElementById(id); if(e) e.textContent=pre+v+' €'; };
-  set('p-mant', p.mant);
-  set('p-opti', p.opti);
-  set('p-prof', p.prof);
-  set('p-corr', p.corr, 'Desde ');
-  set('p-estr', p.estr, 'Desde ');
-}
+// ═══ PRICE CALC ══════════════════════════════════════════════════
 
 function calcPrice() {
-  if (!ST.instr || !ST.svc) return null;
-  if (ST.svc === 'rest') return {label:'Presupuesto personalizado', lines:[]};
-  if (ST.svc === 'diag') return {label:'35 – 50 €', lines:['Diagnóstico descontable del servicio posterior']};
+  const lines = [];
+  let base  = 0;
+  let hasConcrete = false;
 
-  const base = P[ST.instr][ST.svc];
-  if (!base) return null;
+  // 1. Instrument services (multi-select, uno por instrumento × servicio)
+  if (Object.keys(ST.instrs).length > 0 && ST.svcs.size > 0) {
+    Object.entries(ST.instrs).forEach(([instr, {val}]) => {
+      let instrBase = 0;
+      ST.svcs.forEach(svcId => {
+        if (svcId === 'rest') {
+          lines.push(`${INAME[instr]} – ${SVNAME.rest}: Presupuesto personalizado`);
+        } else {
+          const p = svcId === 'diag' ? 35 : (P[instr]?.[svcId] || 0);
+          lines.push(`${INAME[instr]} – ${SVNAME[svcId]}: desde ${p} €`);
+          if (p) { instrBase += p; hasConcrete = true; }
+        }
+      });
+      base += instrBase;
+      if (val === '>5k' && instrBase > 0) {
+        const s = Math.round(instrBase * 0.20);
+        base += s;
+        lines.push(`💎 ${INAME[instr]} alto valor (+20%): +${s} €`);
+      }
+    });
+  }
 
-  let total = base;
-  const lines = [`Base: ${base} €`];
+  // 2. Arco services
+  if (ST.arcos) {
+    Object.entries(ST.arcoSvcs).forEach(([id, qty]) => {
+      if (!qty) return;
+      const svc = ARCO_SVCS[id];
+      const pi  = primaryInstr();
+      const p   = (pi && svc.prices[pi]) ? svc.prices[pi] : svc.prices.default;
+      const tot = p * qty;
+      base += tot; hasConcrete = true;
+      lines.push(`Arco – ${svc.name}${qty > 1 ? ` ×${qty}` : ''}: desde ${tot} €`);
+    });
+  }
 
-  if (ST.valor === '>5k')    { const s=Math.round(base*.20); total+=s; lines.push(`💎 Alto valor (+20%): +${s} €`); }
-  if (ST.urg === 'semana')   { const s=Math.round(base*.25); total+=s; lines.push(`⚡ Urgencia esta semana (+25%): +${s} €`); }
-  if (ST.urg === 'hoy')      { const s=Math.round(base*.40); total+=s; lines.push(`⚡ Urgencia hoy/mañana (+40%): +${s} €`); }
-  if (ST.dlv === 'conservatorio') { total+=20; lines.push('🚗 Recogida conservatorio: +20 €'); }
-  if (ST.dlv === 'domicilio')     { total+=40; lines.push('🚗 Recogida a domicilio: +35–50 € *'); }
+  // 3. Urgency surcharge
+  if (hasConcrete && ST.urg !== 'normal') {
+    const pct  = ST.urg === 'semana' ? 0.25 : 0.40;
+    const s    = Math.round(base * pct);
+    base += s;
+    lines.push(`⚡ Urgencia (+${Math.round(pct*100)}%): +${s} €`);
+  }
 
-  return {label: total + ' €', lines};
+  // 4. Logistics
+  if (ST.dlv === 'conservatorio') { base += 20; lines.push('🚗 Recogida conservatorio: +20 €'); }
+  if (ST.dlv === 'domicilio')     { base += 35; lines.push('🚗 Recogida a domicilio: desde +35 €'); }
+
+  if (!lines.length) return null;
+  return {
+    label: hasConcrete ? `Desde ${base} €` : 'Presupuesto personalizado',
+    lines
+  };
 }
 
 // ═══ SUMMARY ═════════════════════════════════════════════════════
@@ -834,18 +1454,56 @@ function buildSummary() {
   document.getElementById('ss-tel').textContent = tel;
   const er = document.getElementById('ss-email-r');
   if (email) { document.getElementById('ss-email').textContent = email; er.style.display='flex'; }
-  else          er.style.display = 'none';
+  else er.style.display = 'none';
 
-  document.getElementById('ss-instr').textContent = INAME[ST.instr] || '—';
-  document.getElementById('ss-seg').textContent   = SNAME[ST.seg]   || '—';
-  document.getElementById('ss-val').textContent   = VNAME[ST.valor] || 'No indicado';
-  document.getElementById('ss-svc').textContent   = SVNAME[ST.svc]  || '—';
+  // Instrument section
+  const instrSec  = document.getElementById('ss-instr-sec');
+  const instrKeys = Object.keys(ST.instrs);
+  if (instrKeys.length > 0) {
+    instrSec.style.display = 'block';
+    const rows = instrKeys.map(id => {
+      const val = ST.instrs[id].val ? ` (${VNAME[ST.instrs[id].val]})` : '';
+      return `<div class="sum-row"><span class="sum-k">${INAME[id]}</span><span class="sum-v">${val || 'Valor no indicado'}</span></div>`;
+    }).join('');
+    document.getElementById('ss-instr-rows').innerHTML = rows;
+    document.getElementById('ss-seg').textContent = SNAME[ST.seg] || 'No indicado';
+    document.getElementById('ss-svc').textContent = ST.svcs.size ? [...ST.svcs].map(id => SVNAME[id]).join(', ') : '—';
+  } else {
+    instrSec.style.display = 'none';
+  }
 
+  // Arco section
+  const arcoSec = document.getElementById('ss-arco-sec');
+  if (ST.arcos) {
+    arcoSec.style.display = 'block';
+    const valRow = document.getElementById('ss-arco-val-r');
+    if (ST.arcoVal) {
+      document.getElementById('ss-arcoval').textContent = AVNAME[ST.arcoVal] || '—';
+      valRow.style.display = 'flex';
+    } else {
+      valRow.style.display = 'none';
+    }
+    const svcsEl = document.getElementById('ss-arco-svcs');
+    const lines  = Object.entries(ST.arcoSvcs)
+      .filter(([,q]) => q > 0)
+      .map(([id,q]) => `<div class="sum-row"><span class="sum-k">${ARCO_SVCS[id]?.name || id}</span><span class="sum-v">×${q}</span></div>`)
+      .join('');
+    svcsEl.innerHTML = lines || '<div class="sum-row"><span class="sum-k">Servicios</span><span class="sum-v">—</span></div>';
+  } else {
+    arcoSec.style.display = 'none';
+  }
+
+  // Observations
   const obs = document.getElementById('f-obs').value;
-  const or  = document.getElementById('ss-obs-r');
-  if (obs) { document.getElementById('ss-obs').textContent = obs.length>80 ? obs.slice(0,80)+'…' : obs; or.style.display='flex'; }
-  else       or.style.display = 'none';
+  const obsSec = document.getElementById('ss-obs-sec');
+  if (obs) {
+    obsSec.style.display = 'block';
+    document.getElementById('ss-obs').textContent = obs.length > 120 ? obs.slice(0,120)+'…' : obs;
+  } else {
+    obsSec.style.display = 'none';
+  }
 
+  // Logistics
   document.getElementById('ss-urg').textContent = UNAME[ST.urg] || '—';
   document.getElementById('ss-dlv').textContent = DNAME[ST.dlv] || '—';
   const fv = document.getElementById('f-fecha').value;
@@ -853,6 +1511,7 @@ function buildSummary() {
     ? new Date(fv+'T12:00').toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric'})
     : 'Sin preferencia';
 
+  // Price estimate
   const pr = calcPrice();
   if (pr) {
     document.getElementById('e-amount').textContent = pr.label;
@@ -865,81 +1524,123 @@ function buildSummary() {
 
 // ═══ FILES ═══════════════════════════════════════════════════════
 
+let uploadedFiles = []; // array acumulativo de File objects (máx. 3)
+
 function onFiles(inp) {
-  const f = Array.from(inp.files).slice(0,3);
-  document.getElementById('file-names').innerHTML =
-    f.map(x=>`📎 ${x.name} <span style="color:var(--text-3)">(${(x.size/1048576).toFixed(1)} MB)</span>`).join('<br>');
+  Array.from(inp.files).forEach(f => {
+    if (uploadedFiles.length < 3 && !uploadedFiles.some(x => x.name === f.name && x.size === f.size)) {
+      uploadedFiles.push(f);
+    }
+  });
+  inp.value = ''; // reset para que pueda re-seleccionarse el mismo archivo
+  renderFileList();
+}
+
+function removeFile(idx) {
+  uploadedFiles.splice(idx, 1);
+  renderFileList();
+}
+
+function renderFileList() {
+  const zone = document.getElementById('upload-zone');
+  const sub  = document.getElementById('upload-sub');
+  const container = document.getElementById('file-names');
+  const n = uploadedFiles.length;
+
+  zone.classList.toggle('full', n >= 3);
+  sub.textContent = n === 0
+    ? 'Fotos · Vídeo del problema · Nota de audio · Máx. 3 archivos'
+    : `${n} de 3 archivos adjuntos${n < 3 ? ' · Toca para añadir más' : ''}`;
+
+  container.innerHTML = uploadedFiles.map((f, i) => `
+    <div class="file-row">
+      <span class="file-name">📎 ${f.name} <span style="color:var(--text-3)">(${(f.size/1048576).toFixed(1)} MB)</span></span>
+      <button class="file-remove" onclick="removeFile(${i})" aria-label="Eliminar ${f.name}">✕</button>
+    </div>`).join('');
 }
 
 // ═══ SUBMIT ══════════════════════════════════════════════════════
 
 async function submit() {
+  // RGPD check
+  if (!document.getElementById('rgpd-chk').checked) {
+    showErr('err-summary','Acepta la política de privacidad para continuar.');
+    return;
+  }
+
   const bnext = document.getElementById('btn-next');
   const tel   = document.getElementById('f-tel').value || '—';
+  const nom   = document.getElementById('f-nombre').value || '—';
 
-  // Loading state
   bnext.textContent = 'Enviando…';
   bnext.disabled    = true;
 
-  // Build structured payload
+  // Build payload as FormData (Forminit — compatible con file uploads)
   const pr = calcPrice();
-  const payload = {
-    // Formspree meta
-    _subject: `Nueva solicitud: ${INAME[ST.instr]||'—'} · ${SVNAME[ST.svc]||'—'} · ${document.getElementById('f-nombre').value||'—'}`,
-    _replyto: document.getElementById('f-email').value || tel,
+  const fd = new FormData();
 
-    // Contacto
-    Nombre:      document.getElementById('f-nombre').value || '—',
-    Teléfono:    tel,
-    Email:       document.getElementById('f-email').value || 'No indicado',
+  // Contact
+  fd.append('Nombre',   nom);
+  fd.append('Teléfono', tel);
+  fd.append('Email',    document.getElementById('f-email').value || '—');
 
-    // Instrumento
-    Instrumento: INAME[ST.instr]  || '—',
-    Segmento:    SNAME[ST.seg]    || '—',
-    Valor:       VNAME[ST.valor]  || 'No indicado',
+  // Instrumentos (puede haber varios, con valor individual)
+  const instrKeys = Object.keys(ST.instrs);
+  if (instrKeys.length > 0) {
+    const instrStr = instrKeys
+      .map(id => `${INAME[id]}${ST.instrs[id].val ? ' – ' + VNAME[ST.instrs[id].val] : ''}`)
+      .join('; ');
+    fd.append('Instrumento', instrStr);
+  } else {
+    fd.append('Instrumento', '—');
+  }
+  fd.append('Perfil',      SNAME[ST.seg]   || '—');
+  fd.append('Servicio instrumento', ST.svcs.size ? [...ST.svcs].map(id => SVNAME[id]).join(', ') : '—');
 
-    // Servicio
-    Servicio:       SVNAME[ST.svc] || '—',
-    Observaciones:  document.getElementById('f-obs').value || '—',
+  // Arcos
+  fd.append('Arcos', ST.arcos ? 'Sí' : 'No');
+  if (ST.arcos) {
+    fd.append('Valor arco', AVNAME[ST.arcoVal] || '—');
+    const arcoLines = Object.entries(ST.arcoSvcs)
+      .filter(([,q])=>q>0)
+      .map(([id,q])=>`${ARCO_SVCS[id].name} ×${q}`)
+      .join(', ');
+    fd.append('Servicios arco', arcoLines || '—');
+  }
 
-    // Logística
-    Urgencia:   UNAME[ST.urg]  || '—',
-    Entrega:    DNAME[ST.dlv]  || '—',
-    Dirección:  document.getElementById('f-dir').value || '—',
-    Fecha:      document.getElementById('f-fecha').value || 'Sin preferencia',
+  // Service details
+  fd.append('Observaciones', document.getElementById('f-obs').value || '—');
 
-    // Estimación
-    'Estimación orientativa': pr ? pr.label : 'Presupuesto personalizado',
-    'Desglose estimación':    pr ? pr.lines.join(' | ') : '—',
-  };
+  // Logistics
+  fd.append('Urgencia',  UNAME[ST.urg]  || '—');
+  fd.append('Entrega',   DNAME[ST.dlv]  || '—');
+  fd.append('Dirección', document.getElementById('f-dir').value || '—');
+  fd.append('Fecha preferida', document.getElementById('f-fecha').value || 'Sin preferencia');
+
+  // Estimate
+  fd.append('Estimación', pr ? pr.label : 'Presupuesto personalizado');
+  fd.append('Desglose',   pr ? pr.lines.join(' | ') : '—');
+
+  // Files (max 3, desde el array acumulativo)
+  uploadedFiles.slice(0,3).forEach((f,i) => fd.append(`archivo_${i+1}`, f));
 
   try {
-    const res = await fetch('https://formspree.io/f/maqgwqqq', {
+    const res = await fetch(FORM_ENDPOINT, {
       method:  'POST',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body:    JSON.stringify(payload),
+      headers: { 'Accept': 'application/json' },
+      body: fd,
     });
 
     if (res.ok) {
       document.getElementById('done-tel').textContent = tel;
       go('s-done');
     } else {
-      const data = await res.json();
-      throw new Error(data?.error || 'Error desconocido');
+      throw new Error('Server error');
     }
   } catch (err) {
     bnext.textContent = 'Enviar solicitud';
     bnext.disabled    = false;
-    // Inline error notice — no alert()
-    let errBox = document.getElementById('submit-error');
-    if (!errBox) {
-      errBox = document.createElement('div');
-      errBox.id = 'submit-error';
-      errBox.className = 'notice n-red on';
-      errBox.style.marginTop = '12px';
-      document.querySelector('#s-summary').appendChild(errBox);
-    }
-    errBox.textContent = '⚠️ No se pudo enviar la solicitud. Comprueba tu conexión e inténtalo de nuevo.';
+    showErr('err-summary', 'No se pudo enviar. Comprueba tu conexión e inténtalo de nuevo.');
   }
 }
 
