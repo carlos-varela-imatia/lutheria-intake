@@ -968,7 +968,7 @@
 <script>
 // ═══ CONFIG ══════════════════════════════════════════════════════
 // Forminit (ex-Getform) — cuenta de Ana Fariña <anafarinac@gmail.com>
-const FORM_ENDPOINT = 'https://api.forminit.com/form/x11a31we6jn';
+const FORM_ENDPOINT = 'https://api.forminit.com/f/x11a31we6jn';
 
 // ═══ DATA ════════════════════════════════════════════════════════
 
@@ -1561,6 +1561,18 @@ function renderFileList() {
 
 // ═══ SUBMIT ══════════════════════════════════════════════════════
 
+// Forminit rechaza (400) cualquier valor con caracteres no-ASCII (acentos, ñ, guiones largos…)
+// tanto en multipart como en JSON. Normalizamos antes de enviar.
+function toFormSafe(str) {
+  return String(str)
+    .normalize('NFD').replace(new RegExp('[\\u0300-\\u036f]', 'g'), '')
+    .replace(/[–—]/g, '-')
+    .replace(/[‘’]/g, "'")
+    .replace(/[“”]/g, '"')
+    .replace(/[¿¡]/g, '')
+    .replace(/[^\x00-\x7F]/g, '');
+}
+
 async function submit() {
   // RGPD check
   if (!document.getElementById('rgpd-chk').checked) {
@@ -1578,11 +1590,13 @@ async function submit() {
   // Build payload as FormData (Forminit — compatible con file uploads)
   const pr = calcPrice();
   const fd = new FormData();
+  // Forminit rechaza no-ASCII en los valores (ver toFormSafe); las claves fi-* van sin normalizar.
+  const put = (k, v) => fd.append(k, toFormSafe(v));
 
-  // Contact
-  fd.append('Nombre',   nom);
-  fd.append('Teléfono', tel);
-  fd.append('Email',    document.getElementById('f-email').value || '—');
+  // Contact (nombres con prefijo fi- requerido por Forminit: fi-{blockType}-{name})
+  put('fi-sender-fullName', nom);
+  put('fi-text-telefono',   tel);
+  put('fi-sender-email',    document.getElementById('f-email').value || '—');
 
   // Instrumentos (puede haber varios, con valor individual)
   const instrKeys = Object.keys(ST.instrs);
@@ -1590,39 +1604,39 @@ async function submit() {
     const instrStr = instrKeys
       .map(id => `${INAME[id]}${ST.instrs[id].val ? ' – ' + VNAME[ST.instrs[id].val] : ''}`)
       .join('; ');
-    fd.append('Instrumento', instrStr);
+    put('fi-text-instrumento', instrStr);
   } else {
-    fd.append('Instrumento', '—');
+    put('fi-text-instrumento', '—');
   }
-  fd.append('Perfil',      SNAME[ST.seg]   || '—');
-  fd.append('Servicio instrumento', ST.svcs.size ? [...ST.svcs].map(id => SVNAME[id]).join(', ') : '—');
+  put('fi-text-perfil',              SNAME[ST.seg]   || '—');
+  put('fi-text-servicio_instrumento', ST.svcs.size ? [...ST.svcs].map(id => SVNAME[id]).join(', ') : '—');
 
   // Arcos
-  fd.append('Arcos', ST.arcos ? 'Sí' : 'No');
+  put('fi-text-arcos', ST.arcos ? 'Sí' : 'No');
   if (ST.arcos) {
-    fd.append('Valor arco', AVNAME[ST.arcoVal] || '—');
+    put('fi-text-valor_arco', AVNAME[ST.arcoVal] || '—');
     const arcoLines = Object.entries(ST.arcoSvcs)
       .filter(([,q])=>q>0)
       .map(([id,q])=>`${ARCO_SVCS[id].name} ×${q}`)
       .join(', ');
-    fd.append('Servicios arco', arcoLines || '—');
+    put('fi-text-servicios_arco', arcoLines || '—');
   }
 
   // Service details
-  fd.append('Observaciones', document.getElementById('f-obs').value || '—');
+  put('fi-text-observaciones', document.getElementById('f-obs').value || '—');
 
   // Logistics
-  fd.append('Urgencia',  UNAME[ST.urg]  || '—');
-  fd.append('Entrega',   DNAME[ST.dlv]  || '—');
-  fd.append('Dirección', document.getElementById('f-dir').value || '—');
-  fd.append('Fecha preferida', document.getElementById('f-fecha').value || 'Sin preferencia');
+  put('fi-text-urgencia',       UNAME[ST.urg]  || '—');
+  put('fi-text-entrega',        DNAME[ST.dlv]  || '—');
+  put('fi-text-direccion',      document.getElementById('f-dir').value || '—');
+  put('fi-text-fecha_preferida', document.getElementById('f-fecha').value || 'Sin preferencia');
 
   // Estimate
-  fd.append('Estimación', pr ? pr.label : 'Presupuesto personalizado');
-  fd.append('Desglose',   pr ? pr.lines.join(' | ') : '—');
+  put('fi-text-estimacion', pr ? pr.label : 'Presupuesto personalizado');
+  put('fi-text-desglose',   pr ? pr.lines.join(' | ') : '—');
 
-  // Files (max 3, desde el array acumulativo)
-  uploadedFiles.slice(0,3).forEach((f,i) => fd.append(`archivo_${i+1}`, f));
+  // Files (max 3, desde el array acumulativo; los ficheros no se normalizan)
+  uploadedFiles.slice(0,3).forEach((f,i) => fd.append(`fi-file-archivo_${i+1}`, f));
 
   try {
     const res = await fetch(FORM_ENDPOINT, {
