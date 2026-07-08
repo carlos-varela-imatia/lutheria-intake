@@ -61,17 +61,7 @@
       margin-bottom: 12px;
     }
     .brand { display: flex; align-items: center; gap: 10px; }
-    .brand-dot {
-      width: 28px; height: 28px; border-radius: 50%;
-      background: var(--coral);
-      display: flex; align-items: center; justify-content: center;
-    }
-    .brand-dot svg { width: 16px; height: 16px; fill: white; }
-    .brand-name {
-      font-family: 'Lora', serif;
-      font-size: 13px; font-weight: 600;
-      color: var(--text); letter-spacing: 0.03em;
-    }
+    .brand-logo { height: 20px; width: auto; display: block; }
     .step-chip {
       font-size: 11px; font-weight: 600;
       color: var(--coral); letter-spacing: 0.08em;
@@ -147,7 +137,7 @@
     .card .c-icon svg { fill: var(--text-3); color: var(--text-3); }
     .card.on .c-icon svg { fill: var(--coral); color: var(--coral); }
 
-    /* Instrument cards: icono a la izquierda, texto a la derecha */
+    /* Instrument cards: icono a la izquierda (toda la altura), texto apilado a la derecha */
     .instr-card {
       display: flex; align-items: center; gap: 14px;
       padding: 12px 14px;
@@ -158,6 +148,9 @@
     }
     .instr-card .c-icon svg { max-height: 64px; }
     .instr-card .c-text { flex: 1; min-width: 0; }
+    .instr-card .c-divider { width: 24px; max-width: 24px; margin: 2px 0; line-height: 0; }
+    .instr-card .c-divider svg { width: 100%; height: 6px; display: block; overflow: visible; }
+    .instr-card .c-divider path { stroke: var(--border); stroke-width: 1.5; }
 
     .c-name { font-size: 14px; font-weight: 600; color: var(--text); }
     .c-desc { font-size: 12px; color: var(--text-2); margin-top: 3px; line-height: 1.4; }
@@ -228,7 +221,7 @@
     .asvc {
       background: var(--white);
       border: 2px solid var(--border);
-      border-radius: var(--r-sm);
+      border-radius: var(--r);
       padding: 12px 14px;
       display: flex; align-items: center; gap: 10px;
       cursor: pointer; user-select: none;
@@ -237,8 +230,9 @@
     .asvc:hover { border-color: var(--coral); }
     .asvc.on { border-color: var(--coral); background: var(--coral-light); }
     .asvc-info { flex: 1; min-width: 0; }
-    .asvc-name { font-size: 14px; font-weight: 600; color: var(--text); }
-    .asvc-price { font-size: 12px; color: var(--text-2); margin-top: 2px; }
+    .asvc-name { font-size: 15px; font-weight: 600; color: var(--text); }
+    .asvc-desc { font-size: 13px; color: var(--text-2); margin-top: 3px; line-height: 1.45; }
+    .asvc-price { font-size: 14px; font-weight: 700; color: var(--coral-dark); margin-top: 6px; }
     .qty-ctrl {
       display: none;
       align-items: center; gap: 6px; flex-shrink: 0;
@@ -429,12 +423,10 @@
     /* ── ENTRY SCREEN ────────────────────────────── */
     .entry { text-align: center; padding: 28px 0 0; }
     .entry-art {
-      width: 72px; height: 72px;
-      background: var(--coral); border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 20px;
+      margin: 0 auto 24px;
     }
-    .entry-art svg { width: 36px; height: 36px; fill: white; }
+    .entry-art svg { height: 120px; width: auto; fill: var(--coral); color: var(--coral); }
     .entry-title {
       font-family: 'Lora', serif;
       font-size: 28px; font-weight: 700; line-height: 1.2;
@@ -550,12 +542,6 @@
     <line x1="5" y1="10" x2="49" y2="10" stroke="currentColor" stroke-width="0.8" stroke-dasharray="2,2"/>
     <polygon points="47,5 51,8 47,11"/>
   </symbol>
-  <!-- Brand logo (small bow) -->
-  <symbol id="ico-brand" viewBox="0 0 20 20">
-    <path d="M3,14 C5,8 10,5 17,7" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
-    <line x1="3" y1="15" x2="17" y2="15" stroke="white" stroke-width="1" opacity="0.6"/>
-    <circle cx="3" cy="14.5" r="2" fill="white"/>
-  </symbol>
 </svg>
 
 <!-- Screen reader announcer -->
@@ -566,10 +552,7 @@
   <div class="header-inner">
     <div class="header-top">
       <div class="brand">
-        <div class="brand-dot">
-          <svg><use href="#ico-brand"/></svg>
-        </div>
-        <span class="brand-name">Ana Fariña</span>
+        <img src="Assets/ana-farina-logo.png" alt="Ana Fariña" class="brand-logo">
       </div>
       <span class="step-chip" id="chip"></span>
     </div>
@@ -585,7 +568,7 @@
   <div class="step on" id="s-welcome">
     <div class="entry">
       <div class="entry-art">
-        <svg width="34" height="36" viewBox="0 0 34 36"><use href="#ico-violin"/></svg>
+        <svg viewBox="0 0 24 64"><use href="#ico-chelo"/></svg>
       </div>
       <h1 class="entry-title">¿Qué necesita tu instrumento?</h1>
       <p class="entry-sub">Cuéntanoslo en unos pasos.<br>Ana revisará tu solicitud y te confirmará disponibilidad y precio.</p>
@@ -629,25 +612,41 @@
            onclick="pickInstr(this)" role="checkbox" aria-checked="false" tabindex="0"
            onkeydown="if(event.key==='Enter'||event.key===' ')pickInstr(this)">
         <div class="c-icon"><svg width="28" height="64" viewBox="0 0 28 64"><use href="#ico-violin"/></svg></div>
-        <div class="c-text"><div class="c-name">Violín</div></div>
+        <div class="c-text">
+          <div class="c-name">Violín</div>
+          <div class="c-divider" aria-hidden="true"><svg viewBox="0 0 24 6" preserveAspectRatio="none"><path d="M0,3 Q6,1.5 12,3 T24,3" fill="none" stroke-linecap="round"/></svg></div>
+          <div class="c-desc">Cuerda frotada<br>treble.</div>
+        </div>
       </div>
       <div class="card instr-card" data-g="instr" data-v="viola"
            onclick="pickInstr(this)" role="checkbox" aria-checked="false" tabindex="0"
            onkeydown="if(event.key==='Enter'||event.key===' ')pickInstr(this)">
         <div class="c-icon"><svg width="28" height="64" viewBox="0 0 28 64"><use href="#ico-viola"/></svg></div>
-        <div class="c-text"><div class="c-name">Viola</div></div>
+        <div class="c-text">
+          <div class="c-name">Viola</div>
+          <div class="c-divider" aria-hidden="true"><svg viewBox="0 0 24 6" preserveAspectRatio="none"><path d="M0,3 Q6,1.5 12,3 T24,3" fill="none" stroke-linecap="round"/></svg></div>
+          <div class="c-desc">Cuerda frotada<br>tono medio.</div>
+        </div>
       </div>
       <div class="card instr-card" data-g="instr" data-v="chelo"
            onclick="pickInstr(this)" role="checkbox" aria-checked="false" tabindex="0"
            onkeydown="if(event.key==='Enter'||event.key===' ')pickInstr(this)">
         <div class="c-icon"><svg width="24" height="64" viewBox="0 0 24 64"><use href="#ico-chelo"/></svg></div>
-        <div class="c-text"><div class="c-name">Violonchelo</div></div>
+        <div class="c-text">
+          <div class="c-name">Violonchelo</div>
+          <div class="c-divider" aria-hidden="true"><svg viewBox="0 0 24 6" preserveAspectRatio="none"><path d="M0,3 Q6,1.5 12,3 T24,3" fill="none" stroke-linecap="round"/></svg></div>
+          <div class="c-desc">Cuerda frotada<br>tono grave.</div>
+        </div>
       </div>
       <div class="card instr-card" data-g="instr" data-v="contrabajo"
            onclick="pickInstr(this)" role="checkbox" aria-checked="false" tabindex="0"
            onkeydown="if(event.key==='Enter'||event.key===' ')pickInstr(this)">
         <div class="c-icon"><svg width="28" height="64" viewBox="0 0 28 64"><use href="#ico-contrabajo"/></svg></div>
-        <div class="c-text"><div class="c-name">Contrabajo</div></div>
+        <div class="c-text">
+          <div class="c-name">Contrabajo</div>
+          <div class="c-divider" aria-hidden="true"><svg viewBox="0 0 24 6" preserveAspectRatio="none"><path d="M0,3 Q6,1.5 12,3 T24,3" fill="none" stroke-linecap="round"/></svg></div>
+          <div class="c-desc">Cuerda frotada<br>gran tamaño.</div>
+        </div>
       </div>
     </div>
 
@@ -764,7 +763,8 @@
         <div class="asvc" id="asvc-encerdado" onclick="toggleArcoSvc('encerdado',event)">
           <div class="asvc-info">
             <div class="asvc-name">Encerdado</div>
-            <div class="asvc-price" id="ap-encerdado">Desde 75 €</div>
+            <div class="asvc-desc">Limpieza de vara y aplicación de goma laca. Revisión de tornillo. Cambio de crin.</div>
+            <div class="asvc-price" id="ap-encerdado">Desde 63 €</div>
           </div>
           <div class="qty-ctrl" id="qc-encerdado">
             <button class="qty-btn" onclick="adjQty('encerdado',-1,event)">−</button>
@@ -775,8 +775,9 @@
 
         <div class="asvc" id="asvc-empunadura" onclick="toggleArcoSvc('empunadura',event)">
           <div class="asvc-info">
-            <div class="asvc-name">Cambio de Empuñadura</div>
-            <div class="asvc-price" id="ap-empunadura">Desde 40 €</div>
+            <div class="asvc-name">Cambio de Guarnición</div>
+            <div class="asvc-desc">Cambio de entorchado en plata y colocación de cuero. Entorchado en seda.</div>
+            <div class="asvc-price" id="ap-empunadura">Desde 100 €</div>
           </div>
           <div class="qty-ctrl" id="qc-empunadura">
             <button class="qty-btn" onclick="adjQty('empunadura',-1,event)">−</button>
@@ -787,8 +788,9 @@
 
         <div class="asvc" id="asvc-punta" onclick="toggleArcoSvc('punta',event)">
           <div class="asvc-info">
-            <div class="asvc-name">Arreglo de Punta</div>
-            <div class="asvc-price" id="ap-punta">Desde 35 €</div>
+            <div class="asvc-name">Cambio de punta</div>
+            <div class="asvc-desc">Cambio de punta de arco en diferentes materiales.</div>
+            <div class="asvc-price" id="ap-punta">Desde 75 €</div>
           </div>
           <div class="qty-ctrl" id="qc-punta">
             <button class="qty-btn" onclick="adjQty('punta',-1,event)">−</button>
@@ -799,13 +801,27 @@
 
         <div class="asvc" id="asvc-tornillo" onclick="toggleArcoSvc('tornillo',event)">
           <div class="asvc-info">
-            <div class="asvc-name">Ajuste de Tornillo</div>
-            <div class="asvc-price" id="ap-tornillo">Desde 25 €</div>
+            <div class="asvc-name">Arreglo de Tornillo</div>
+            <div class="asvc-desc">Revisión y ajuste o cambio de tornillo y tuerca.</div>
+            <div class="asvc-price" id="ap-tornillo">Desde 40 €</div>
           </div>
           <div class="qty-ctrl" id="qc-tornillo">
             <button class="qty-btn" onclick="adjQty('tornillo',-1,event)">−</button>
             <span class="qty-num" id="qn-tornillo">1</span>
             <button class="qty-btn" onclick="adjQty('tornillo',+1,event)">+</button>
+          </div>
+        </div>
+
+        <div class="asvc" id="asvc-otro" onclick="toggleArcoSvc('otro',event)">
+          <div class="asvc-info">
+            <div class="asvc-name">Otro</div>
+            <div class="asvc-desc">¿Tu arco necesita algún trabajo que no está en la lista? Dinos aquí lo que le pasa.</div>
+            <div class="asvc-price" id="ap-otro">Presupuesto personalizado</div>
+          </div>
+          <div class="qty-ctrl" id="qc-otro">
+            <button class="qty-btn" onclick="adjQty('otro',-1,event)">−</button>
+            <span class="qty-num" id="qn-otro">1</span>
+            <button class="qty-btn" onclick="adjQty('otro',+1,event)">+</button>
           </div>
         </div>
 
@@ -982,10 +998,11 @@ const P = {
 
 // Arco service definitions
 const ARCO_SVCS = {
-  encerdado:  {name:'Encerdado',           prices:{violin:75, viola:75, chelo:95, contrabajo:120, default:75}},
-  empunadura: {name:'Cambio de Empuñadura', prices:{default:40}},
-  punta:      {name:'Arreglo de Punta',    prices:{default:35}},
-  tornillo:   {name:'Ajuste de Tornillo',  prices:{default:25}},
+  encerdado:  {name:'Encerdado',            prices:{default:63}},
+  empunadura: {name:'Cambio de Guarnición', prices:{default:100}},
+  punta:      {name:'Cambio de punta',      prices:{default:75}},
+  tornillo:   {name:'Arreglo de Tornillo',  prices:{default:40}},
+  otro:       {name:'Otro', custom:true},
 };
 
 const INAME  = {violin:'Violín', viola:'Viola', chelo:'Violonchelo', contrabajo:'Contrabajo'};
@@ -1341,14 +1358,10 @@ function refreshPrices() {
 }
 
 function renderArcoSvcPrices() {
-  const instr = primaryInstr();
   Object.keys(ARCO_SVCS).forEach(id => {
     const el = document.getElementById(`ap-${id}`);
     if (!el) return;
-    const prices = ARCO_SVCS[id].prices;
-    const p = (instr && prices[instr]) ? prices[instr] : prices.default;
-    const prefix = (id === 'encerdado' && instr) ? '' : 'Desde ';
-    el.textContent = `${prefix}${p} €`;
+    el.textContent = ARCO_SVCS[id].custom ? 'Presupuesto personalizado' : `Desde ${ARCO_SVCS[id].prices.default} €`;
   });
 }
 
@@ -1416,9 +1429,11 @@ function calcPrice() {
     Object.entries(ST.arcoSvcs).forEach(([id, qty]) => {
       if (!qty) return;
       const svc = ARCO_SVCS[id];
-      const pi  = primaryInstr();
-      const p   = (pi && svc.prices[pi]) ? svc.prices[pi] : svc.prices.default;
-      const tot = p * qty;
+      if (svc.custom) {
+        lines.push(`Arco – ${svc.name}: Presupuesto personalizado`);
+        return;
+      }
+      const tot = svc.prices.default * qty;
       base += tot; hasConcrete = true;
       lines.push(`Arco – ${svc.name}${qty > 1 ? ` ×${qty}` : ''}: desde ${tot} €`);
     });
