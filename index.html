@@ -247,6 +247,8 @@
       transition: background 0.1s;
     }
     .qty-btn:hover { background: var(--coral-dark); }
+    .qty-btn:disabled { background: var(--border); color: var(--text-3); cursor: not-allowed; }
+    .qty-btn:disabled:hover { background: var(--border); }
     .qty-num {
       font-size: 15px; font-weight: 700;
       min-width: 18px; text-align: center; color: var(--coral-dark);
@@ -788,7 +790,7 @@
 
         <div class="asvc" id="asvc-punta" onclick="toggleArcoSvc('punta',event)">
           <div class="asvc-info">
-            <div class="asvc-name">Cambio de punta</div>
+            <div class="asvc-name">Cambio de Punta</div>
             <div class="asvc-desc">Cambio de punta de arco en diferentes materiales.</div>
             <div class="asvc-price" id="ap-punta">Desde 75 €</div>
           </div>
@@ -815,13 +817,13 @@
         <div class="asvc" id="asvc-otro" onclick="toggleArcoSvc('otro',event)">
           <div class="asvc-info">
             <div class="asvc-name">Otro</div>
-            <div class="asvc-desc">¿Tu arco necesita algún trabajo que no está en la lista? Dinos aquí lo que le pasa.</div>
+            <div class="asvc-desc">¿Tu arco necesita algún trabajo que no está en la lista? Dinos en observaciones lo que le pasa.</div>
             <div class="asvc-price" id="ap-otro">Presupuesto personalizado</div>
           </div>
           <div class="qty-ctrl" id="qc-otro">
             <button class="qty-btn" onclick="adjQty('otro',-1,event)">−</button>
             <span class="qty-num" id="qn-otro">1</span>
-            <button class="qty-btn" onclick="adjQty('otro',+1,event)">+</button>
+            <button class="qty-btn" onclick="event.stopPropagation()" disabled title="Un presupuesto personalizado no admite varias unidades">+</button>
           </div>
         </div>
 
@@ -1304,6 +1306,7 @@ function toggleArcoSvc(id, ev) {
 function adjQty(id, delta, ev) {
   ev.stopPropagation();
   if (!ST.arcoSvcs[id]) return;
+  if (ARCO_SVCS[id].custom) return; // presupuesto personalizado: siempre 1 unidad
   ST.arcoSvcs[id] = Math.max(1, ST.arcoSvcs[id] + delta);
   document.getElementById(`qn-${id}`).textContent = ST.arcoSvcs[id];
 }
